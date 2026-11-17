@@ -1,0 +1,316 @@
+main.unified-dashboard
+    header.hero
+        div
+            span.eyebrow UNIFIED NEWTON WAREHOUSE LAB
+            h1 Warehouse Collision Avoidance
+            p Newton Physics · A* · Naive · VO · ORCA
+        .engine-state
+            span 실제 엔진
+            strong {{selected ? 'Newton ' + selected.newton_version : 'Newton 1.7.0'}}
+            small CPU · Newton ViewerViser · 동기화된 2D/3D
+
+    nav.workspace-tabs(aria-label="Warehouse Collision Avoidance 메뉴")
+        button(type="button", [class.active]="activeView === 'simulation'", (click)="setView('simulation')") 시뮬레이션
+        button(type="button", [class.active]="activeView === 'comparison'", (click)="setView('comparison')") 알고리즘 비교
+        button(type="button", [class.active]="activeView === 'results'", (click)="setView('results')") 실험 결과
+        button(type="button", [class.active]="activeView === 'settings'", (click)="setView('settings')") 환경 설정
+
+    p.status(role="status", [class.busy]="busy") {{message}}
+
+    section(*ngIf="activeView === 'simulation'")
+        .simulation-layout
+            .viewer-card(#viewerPanel="")
+                .section-head
+                    div
+                        span.eyebrow NEWTON LIVE WAREHOUSE
+                        h2 {{selected ? selected.algorithm + ' · ' + (selected.mapName || selected.scenario) : '물류창고 시뮬레이션'}}
+                    span.badge([class.warn]="current && showCollisions && current.risk") {{current ? current.t + 's' : '대기'}}
+                .map-buttons(aria-label="선반 배치 맵")
+                    button(type="button", *ngFor="let item of maps", [class.active]="mapId === item.mapId", [attr.aria-pressed]="mapId === item.mapId", [disabled]="busy || controlBusy", [title]="item.description", (click)="changeMap(item.mapId)") {{item.mapName}}
+                p.map-description {{mapDescription}}
+                .view-toolbar
+                    button(type="button", [class.active]="viewMode === '3d'", (click)="switchViewer('3d')") 3D View
+                    button(type="button", [class.active]="viewMode === '2d'", (click)="switchViewer('2d')") 2D Top View
+                    span.mode-badge {{modeLabel}}
+                    button(type="button", (click)="fullscreen()") 전체화면
+                .viser-view([hidden]="viewMode !== '3d'", *ngIf="viewerUrl")
+                    iframe([src]="viewerUrl", title="Newton ViewerViser 3D Warehouse", allow="fullscreen", allowfullscreen="")
+                    p.viewer-help 드래그 회전 · 휠 확대 · 우클릭 이동 | 청록: 로봇 · 주황: 작업자 · 빨강: 현재 위험
+                .empty-state(*ngIf="!current")
+                    strong 아직 실행 결과가 없습니다.
+                    p Start를 누르면 서버의 독립 Python 3.12 환경에서 Newton 강체 시뮬레이션을 실행합니다.
+                .warehouse-view(*ngIf="current", [hidden]="viewMode !== '2d'")
+                    svg([attr.viewBox]="mapViewBox", role="img", aria-label="Newton 물류창고 상태의 평면 투영")
+                        rect(x="0", y="0", [attr.width]="mapWidth", [attr.height]="mapHeight", fill="#f8faf9", stroke="#8ca39e", stroke-width="5")
+                        g(*ngIf="selected.scenario !== 'basic'")
+                            rect.shelf(*ngFor="let shelf of shelves", [attr.x]="shelf.x*mapScale", [attr.y]="mapHeight-(shelf.y+shelf.h)*mapScale", [attr.width]="shelf.w*mapScale", [attr.height]="shelf.h*mapScale", [attr.transform]="'rotate('+(-shelf.rotation)+' '+(shelf.cx*mapScale)+' '+(mapHeight-shelf.cy*mapScale)+')'")
+                        circle(*ngIf="selected.protected_radius_m", [attr.cx]="selected.start[0]*mapScale", [attr.cy]="mapHeight-selected.start[1]*mapScale", [attr.r]="selected.protected_radius_m*mapScale", fill="#14b8a612", stroke="#14b8a6", stroke-dasharray="5 5")
+                        circle(*ngIf="selected.protected_radius_m", [attr.cx]="selected.goal[0]*mapScale", [attr.cy]="mapHeight-selected.goal[1]*mapScale", [attr.r]="selected.protected_radius_m*mapScale", fill="#22c55e12", stroke="#22c55e", stroke-dasharray="5 5")
+                        polyline.planned(*ngIf="showPath", [attr.points]="plannedPath")
+                        polyline.trajectory(*ngIf="showPath", [attr.points]="trajectory", [attr.stroke]="methodColor(selected.algorithm)")
+                        circle.goal([attr.cx]="selected.goal[0]*mapScale", [attr.cy]="mapHeight-selected.goal[1]*mapScale", r="10")
+                        g.worker(*ngFor="let person of current.workers", [attr.transform]="'translate('+(person[0]*mapScale)+' '+(mapHeight-person[1]*mapScale)+')'")
+                            circle(r="7")
+                            path(d="M0 7V18M-6 12H6")
+                        g.other-robot(*ngFor="let robot of current.robots", [attr.transform]="'translate('+(robot[0]*mapScale)+' '+(mapHeight-robot[1]*mapScale)+')'")
+                            rect(x="-8", y="-8", width="16", height="16", rx="2")
+                        circle.robot-halo(*ngIf="showCollisions", [class.alert]="current.risk", [attr.cx]="current.robot[0]*mapScale", [attr.cy]="mapHeight-current.robot[1]*mapScale", [attr.r]="(selected.bodies[0].radius+selected.safety_distance_m)*mapScale")
+                        g.primary-robot([attr.transform]="'translate('+(current.robot[0]*mapScale)+' '+(mapHeight-current.robot[1]*mapScale)+')'")
+                            circle(r="10")
+                            text(x="0", y="4", text-anchor="middle") R0
+                .playback(*ngIf="current && phase.startsWith('replay')")
+                    span 저장 기록
+                    button(type="button", [disabled]="controlBusy", (click)="play()") {{phase === 'replay' ? 'Pause' : 'Resume'}}
+                    input(type="range", min="0", [max]="selected.frames.length-1", [(ngModel)]="frame", (change)="seek()", [disabled]="controlBusy", aria-label="저장 기록 프레임")
+                    strong {{frame + 1}} / {{selected.frames.length}}
+                .telemetry(*ngIf="current")
+                    div
+                        span 위치 X-Y
+                        strong {{current.robot[0]}} · {{current.robot[1]}}m
+                    div
+                        span 속도 X-Y
+                        strong {{current.velocity[0]}} · {{current.velocity[1]}}m/s
+                    div
+                        span 충돌 / 안전거리
+                        strong {{current.collisions}} / {{current.safety_violations}}
+                    div
+                        span 목표 상태
+                        strong {{current.reached ? '도달 · 정지' : (selected.status === 'timeout' ? '시간 초과 · 미도달' : '이동 중 · 미도달')}}
+                    div
+                        span 선택 알고리즘 / 로봇 · 작업자 수
+                        strong {{selected.algorithm}} / {{selected.other_robot_count + 1}} · {{selected.worker_count}}
+                    div
+                        span 목표 속도 X-Y (m/s)
+                        strong {{current.target_velocity[0] | number:'1.2-3'}} · {{current.target_velocity[1] | number:'1.2-3'}}
+                    div
+                        span 알고리즘 / 물리 계산 (ms/step)
+                        strong {{current.algorithm_ms | number:'1.2-3'}} / {{current.physics_ms | number:'1.2-3'}}
+                    div
+                        span 현재 전역 탐색 / 계획 시간
+                        strong {{plannerNames[selected.planner || 'astar']}} / {{metric(selected.planning_time_ms)}}ms
+                    div
+                        span 계획 경로 길이 / 확장 노드
+                        strong {{metric(selected.planned_path_length_m)}}m / {{metric(selected.expanded_nodes)}}
+                    div
+                        span 현재 R0 충돌 위험
+                        strong([class.risk-text]="current.risk") {{current.risk ? '위험 접근 / 접촉' : '안전'}}
+                .body-table(*ngIf="current")
+                    table
+                        thead
+                            tr
+                                th Newton 강체 ID
+                                th 종류
+                                th 위치 X / Y / Z (m)
+                                th 속도 X / Y (m/s)
+                        tbody
+                            tr(*ngFor="let body of selected.bodies")
+                                td {{body.id}}
+                                td {{body.kind === 'worker' ? '작업자' : '로봇'}}
+                                td {{current.body_q[body.body][0] | number:'1.2-2'}} / {{current.body_q[body.body][1] | number:'1.2-2'}} / {{current.body_q[body.body][2] | number:'1.2-2'}}
+                                td {{current.body_qd[body.body][0] | number:'1.2-2'}} / {{current.body_qd[body.body][1] | number:'1.2-2'}}
+            aside.control-card
+                span.eyebrow RUN CONTROL
+                h2 Newton 실행
+                label 전역 경로 탐색
+                    select(aria-label="전역 경로 탐색", [(ngModel)]="planner", [disabled]="busy || controlBusy")
+                        option(value="astar") A*
+                        option(value="dijkstra") Dijkstra
+                        option(value="rrt") RRT
+                label 작업자 모드
+                    select(aria-label="작업자 모드", [(ngModel)]="trafficMode", [disabled]="busy || controlBusy")
+                        option(value="dynamic") 동적 순찰
+                        option(value="static") 정적 작업자
+                .algorithm-buttons
+                    button(type="button", *ngFor="let item of algorithms", [class.active]="algorithm === item.key", [disabled]="busy || controlBusy", (click)="setAlgorithm(item.key)") {{item.name}}
+                button.primary(type="button", [disabled]="busy || controlBusy", (click)="startLive()") {{controlBusy ? '제어 중…' : 'Start'}}
+                button(type="button", [disabled]="controlBusy || (phase !== 'running' && phase !== 'replay')", (click)="control('pause')") Pause
+                button(type="button", [disabled]="controlBusy || (phase !== 'paused' && phase !== 'replay_paused')", (click)="control('resume')") Resume
+                button(type="button", [disabled]="!session || controlBusy", (click)="reset()") Reset
+                button(type="button", [class.active]="showPath", (click)="togglePath()") 이동 경로 {{showPath ? 'ON' : 'OFF'}}
+                button(type="button", [class.active]="showCollisions", (click)="toggleCollisions()") 충돌 표시 {{showCollisions ? 'ON' : 'OFF'}}
+                .engine-note
+                    strong {{modeLabel}}
+                    p 실시간: 목표까지 주행하도록 짧은 실행 한도를 자동 보정합니다. Pause는 물리 계산을 정지하고 Reset은 출발 상태를 재생성합니다.
+                    p 저장 기록: 완료된 실행의 강체 자세를 재생합니다. 두 뷰는 같은 시간 상태를 공유합니다.
+                    p {{selected?.width || 38}} × {{selected?.height || 26}}m · {{selected?.mapName || 'Map 1: Default'}} · START/GOAL 보호 반경 3m
+                    p 알고리즘 선택 변경 시 새 물리 실행을 시작합니다. 충돌·안전거리 지표는 주행 로봇 R0 기준입니다.
+
+    section(*ngIf="activeView === 'comparison'")
+        .section-head
+            div
+                span.eyebrow SAME NEWTON WORLD · SAME SEED
+                h2 6개 맵 기준 Naive / VO / ORCA 비교
+            div
+                label 비교 범위
+                    select(aria-label="비교 범위", [(ngModel)]="compareScope", [disabled]="busy || controlBusy")
+                        option(value="all") 6개 맵 전체
+                        option(value="selected") 선택한 맵만
+                button.primary(type="button", [disabled]="busy || controlBusy", (click)="execute('compare')") {{compareScope === 'all' ? '6개 맵 · 18조건 비교 실행' : '선택 맵 · 세 알고리즘 실행'}}
+        p.note 6개 맵 전체가 기본입니다. 맵마다 Naive·VO·ORCA를 같은 조건으로 실행합니다. 전역 탐색기·작업자 모드·속도·안전거리·시드는 환경 설정값을 공통 적용하며, 전체 비교는 공통 작업자 배치를 사용합니다. 이전 24×16m 시나리오는 전체 비교 시 medium으로 전환합니다.
+        .algorithm-grid
+            article(*ngFor="let item of algorithms", [class.selected]="algorithm === item.key", (click)="setAlgorithm(item.key)")
+                strong {{item.name}}
+                p {{item.detail}}
+        button(type="button", [disabled]="busy", (click)="loadSavedResults()") 저장 CSV 불러오기
+        p.note {{savedMessage}}
+        .chart-grid(*ngIf="comparisonRows.length")
+            figure(*ngFor="let map of maps")
+                figcaption {{map.mapName}} · 성공한 실행의 도달 시간
+                div(*ngFor="let run of mapComparisonRows(map.mapId)")
+                    span {{run.algorithm}} · {{run.status === 'success' ? metric(run.arrival_time_s ?? run.sim_time_s)+'s' : 'N/A (timeout)'}}
+                    div([style.width.%]="arrivalBar(run)", [style.background]="methodColor(run.algorithm)", style="height:14px;min-width:0;margin:4px 0 10px")
+        .table-scroll(*ngIf="comparisonRows.length")
+            table
+                thead
+                    tr
+                        th 맵
+                        th 전역 경로 / 작업자
+                        th 알고리즘
+                        th 상태
+                        th 도달 시간(s)
+                        th 이동 거리
+                        th 충돌
+                        th 안전거리 위반
+                        th 평균 계산시간(ms)
+                        th 최악 계산시간(ms)
+                tbody
+                    tr(*ngFor="let run of comparisonRows")
+                        td {{run.mapName || run.scenario}}
+                        td {{plannerNames[run.planner || 'astar']}} / {{run.traffic_mode || 'dynamic'}}
+                        td
+                            button.link(type="button", [disabled]="busy || controlBusy || run.saved", (click)="selectRun(run); setView('simulation')") {{run.algorithm}}
+                        td {{run.status}}
+                        td {{run.status === 'success' ? metric(run.arrival_time_s ?? run.sim_time_s) : 'N/A'}}
+                        td {{metric(run.path_length_m)}}m
+                        td {{run.collisions}}
+                        td {{run.safety_violations}}
+                        td {{metric(run.algo_time_avg_ms)}}
+                        td {{metric(run.algo_time_max_ms)}}
+        h3 현재 파라미터
+        table
+            tbody
+                tr(*ngFor="let field of parameterFields")
+                    th {{field.label}}
+                    td {{parameters[field.key]}}
+                tr
+                    th 공통 maxSpeed / 안전거리
+                    td {{speed}} m/s / {{safety}} m
+        p.note 각 행의 CSV에는 실행 당시 파라미터가 보존됩니다. 설정을 바꾸면 저장 CSV를 다시 불러와 일치하는 결과만 확인하세요.
+        p.note 각 맵의 비교 실행은 같은 Newton 강체·선택한 전역 경로 탐색기·시드·장애물 조건을 사용합니다. 목표에서 정지한 경우에만 success이며, 프레임 한도 내 미도달은 timeout으로 표시합니다.
+
+    section(*ngIf="activeView === 'results'")
+        span.eyebrow MEASURED RESULTS
+        h2 Newton 실행 결과와 기존 예비 실험
+        h3 현재 파라미터
+        table
+            tbody
+                tr(*ngFor="let field of parameterFields")
+                    th {{field.label}}
+                    td {{parameters[field.key]}}
+                tr
+                    th 공통 maxSpeed / 안전거리
+                    td {{speed}} m/s / {{safety}} m
+        .summary-grid(*ngIf="runs.length")
+            article(*ngFor="let run of runs")
+                span {{run.algorithm}}
+                strong {{run.algorithm_ms_per_frame}} ms/frame
+                small {{run.status}} · {{run.path_length_m}}m · 충돌 {{run.collisions}}
+        p.note 기존 Pygame 실험 CSV·그래프는 삭제하지 않고 기준 데이터로 유지했습니다. 아래 그래프는 Newton 결과가 아니라 기존 예비 실험임을 구분합니다.
+        .chart-grid
+            figure
+                img(src="/assets/warehouse-simulator/figures/03_success_rate.png", alt="기존 예비 실험 성공률")
+                figcaption 기존 예비 실험 · 성공률
+            figure
+                img(src="/assets/warehouse-simulator/figures/04_runtime.png", alt="기존 예비 실험 Runtime")
+                figcaption 기존 예비 실험 · Runtime
+            figure
+                img(src="/assets/warehouse-simulator/figures/02_collisions.png", alt="기존 예비 실험 충돌 횟수")
+                figcaption 기존 예비 실험 · 충돌
+            figure
+                img(src="/assets/warehouse-simulator/figures/06_trajectories.png", alt="기존 예비 실험 이동 궤적")
+                figcaption 기존 예비 실험 · 이동 궤적
+
+    section(*ngIf="activeView === 'settings'")
+        h2 지역 회피 파라미터
+        p.note 기본값은 기존 구현을 유지합니다. ORCA 이웃 거리/수 0은 제한 없음입니다. timeStep은 물리 스텝과 공통이며 maxSpeed·안전거리는 아래 기존 설정을 사용합니다. Naive는 긴급 반응 시 감속·반발하며 정지 보장은 없습니다.
+        .settings-grid
+            label(*ngFor="let field of parameterFields") {{field.label}}
+                input(type="number", step="any", [(ngModel)]="parameters[field.key]", [disabled]="busy || controlBusy")
+        span.eyebrow ENVIRONMENT CONFIGURATION
+        h2 환경 설정
+        .settings-grid
+            label 시나리오 / 장애물
+                select([ngModel]="scenario", (ngModelChange)="setScenario($event)", [disabled]="busy || controlBusy")
+                    option(*ngFor="let item of scenarios", [value]="item.key") {{item.name}}
+            label 추가 에이전트 수 (주행 AMR 제외)
+                input(type="number", min="0", max="40", [(ngModel)]="agents", [disabled]="busy || controlBusy || presetPopulation")
+            label 안전거리 (m)
+                input(type="number", min="0", max="1", step="0.05", [(ngModel)]="safety", [disabled]="busy || controlBusy")
+            label 로봇 최대 속도 (m/s)
+                input(type="number", min="0.2", max="2", step="0.1", [(ngModel)]="speed", [disabled]="busy || controlBusy")
+            label 랜덤 시드
+                input(type="number", min="0", max="999999", [(ngModel)]="seed", [disabled]="busy || controlBusy")
+            label 실험 최대 실행 프레임 (기본 30fps)
+                input(type="number", min="30", max="10800", step="30", [(ngModel)]="frames", [disabled]="busy || controlBusy")
+        .viewer-info
+            strong ViewerViser
+            p ViewerViser는 CPU Newton의 body_q 강체 자세를 직접 렌더링합니다. 웹 주소 내부의 HTTP 중계를 통해 연결하며 X11 DISPLAY가 필요하지 않습니다.
+        button.primary(type="button", [disabled]="busy || controlBusy", (click)="execute('single'); setView('simulation')") 설정으로 실행
+
+    section.planning-study(*ngIf="activeView === 'results'")
+        h2 전역 경로 탐색 실측 비교
+        p.note 지역 회피 ORCA 고정 · 6개 맵 · 정적/동적 구분 · A*/Dijkstra 각 1회, RRT 시드 42·43·44 각 3회. 성공률은 Newton 목표 도달 기준입니다.
+        button.primary(type="button", [disabled]="studyBusy", (click)="runStudy()") {{studyBusy ? '실측 실행 중' : '60조건 Newton CPU 실험 실행'}}
+        span {{study?.completed || 0}} / {{study?.total || 60}} · {{study?.phase || 'idle'}}
+        p.note 수 분이 소요되며 서버에서 순차 실행합니다. 진행 중 값은 부분 결과입니다.
+        p.status(*ngIf="studyError") {{studyError}}
+        label 실험 모드
+            select([(ngModel)]="studyMode", (ngModelChange)="studyPath = null")
+                option(value="static") 정적 작업자
+                option(value="dynamic") 동적 작업자
+        p.note 청록 A* · 파랑 Dijkstra · 주황 RRT | 막대는 평균, 분산은 표에 표시. RRT는 최적 경로 탐색기가 아닙니다.
+        .planning-charts(*ngIf="studyRows.length")
+            figure(*ngFor="let metricName of ['planned_path_length_m','planning_time_ms','success_rate']")
+                figcaption {{metricName === 'planned_path_length_m' ? 'Path Length (m)' : metricName === 'planning_time_ms' ? 'Planning Time (ms)' : 'Success Rate (%)'}}
+                svg(viewBox="0 0 660 210", role="img", [attr.aria-label]="metricName")
+                    line(x1="25", y1="170", x2="650", y2="170", stroke="#aaa")
+                    g(*ngFor="let bar of chartBars(metricName)")
+                        rect([attr.x]="bar.x", [attr.y]="bar.y", width="20", [attr.height]="bar.height", [attr.fill]="bar.color")
+                            title {{bar.mapName}} · {{plannerNames[bar.planner]}}: {{bar.label}}
+                    text(*ngFor="let m of maps; let i = index", [attr.x]="35+i*100", y="194", font-size="12") Map {{i+1}}
+        .body-table(*ngIf="studyRows.length")
+            table
+                thead
+                    tr
+                        th 맵 / 탐색기
+                        th 횟수 / 성공률 %
+                        th Path m / 분산
+                        th Planning ms / 분산
+                        th Expanded
+                        th Travel s
+                        th Collision
+                        th Replan
+                        th Turns
+                tbody
+                    tr(*ngFor="let row of studyRows")
+                        td
+                            button.link(type="button", (click)="chooseStudyPath(row)") {{row.mapName}} / {{plannerNames[row.planner]}}
+                        td {{row.runs}} / {{metric(row.success_rate)}}
+                        td {{metric(row.planned_path_length_m)}} / {{metric(row.planned_path_length_m_variance)}}
+                        td {{metric(row.planning_time_ms)}} / {{metric(row.planning_time_ms_variance)}}
+                        td {{metric(row.expanded_nodes)}}
+                        td {{metric(row.travel_time_s)}}
+                        td {{metric(row.collisions)}}
+                        td {{metric(row.replanning_count)}}
+                        td {{metric(row.turning_count)}}
+        p.note Travel은 도달한 실행의 실제 시뮬레이션 시간입니다. Replan은 초기 계획 이후 재계산 횟수(현재 0), Turns는 계획 경로의 15도 이상 방향 전환입니다. RRT Expanded Nodes는 N/A입니다.
+        figure.study-path(*ngIf="studyPath")
+            figcaption {{studyPath.traffic_mode}} · {{studyPath.mapName}} · {{plannerNames[studyPath.planner]}} · seed {{studyPath.planner_seed}} · 계획 {{metric(studyPath.planned_path_length_m)}}m · {{studyPath.status}}
+            svg(viewBox="0 0 38 26", role="img", aria-label="실측 경로와 장애물")
+                rect(x="0", y="0", width="38", height="26", fill="#f3f8f6", stroke="#789", stroke-width="0.1")
+                rect(*ngFor="let s of studyPath.shelf_poses", [attr.x]="s.position[0]-s.size[0]/2", [attr.y]="s.position[1]-s.size[1]/2", [attr.width]="s.size[0]", [attr.height]="s.size[1]", [attr.transform]="'rotate('+s.rotation+' '+s.position[0]+' '+s.position[1]+')'", fill="#647b78")
+                polyline([attr.points]="points(studyPath.path)", fill="none", stroke="#2563eb", stroke-width="0.15")
+                polyline([attr.points]="points(studyPath.trajectory)", fill="none", stroke="#0f766e", stroke-width="0.13")
+                circle([attr.cx]="studyPath.start[0]", [attr.cy]="studyPath.start[1]", r="0.3", fill="#14b8a6")
+                circle([attr.cx]="studyPath.goal[0]", [attr.cy]="studyPath.goal[1]", r="0.3", fill="#ef4444")
+            p.note 파랑: 계산된 경로 · 청록: 실제 Newton 주행 경로 · START 청록 / GOAL 빨강. 표의 행을 눌러 탐색 경로를 선택합니다.

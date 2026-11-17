@@ -1,0 +1,242 @@
+[
+  {
+    "mapId": "map1",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 31.3,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.029773949338687947
+  },
+  {
+    "mapId": "map1",
+    "status": "success",
+    "sim_time_s": 30.833,
+    "goal_distance_m": 0.0219620109308147,
+    "collisions": 0,
+    "safety_violations": 1,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_position": [
+      35.478,
+      13.0005
+    ],
+    "path_length_m": 33.0798,
+    "wall_seconds": 8.42,
+    "algorithm": "ORCA"
+  },
+  {
+    "mapId": "map1",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 30.6,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.026180372178196958
+  },
+  {
+    "mapId": "map2",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.027111618124139314
+  },
+  {
+    "mapId": "map2",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "goal_distance_m": 0.027111618124139314,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_position": [
+      35.4733,
+      13.0045
+    ],
+    "path_length_m": 34.1877,
+    "wall_seconds": 8.14,
+    "algorithm": "ORCA"
+  },
+  {
+    "mapId": "map2",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.027111618124139314
+  },
+  {
+    "mapId": "map3",
+    "algorithm": "Naive",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.021122157217707976,
+    "sim_time_s": 32.3,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map3",
+    "algorithm": "ORCA",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.021122157217707976,
+    "sim_time_s": 32.3,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map3",
+    "algorithm": "VO",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.021122157217707976,
+    "sim_time_s": 32.3,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map4",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 38.133,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.02596530151481965
+  },
+  {
+    "mapId": "map4",
+    "status": "success",
+    "sim_time_s": 36.567,
+    "goal_distance_m": 0.029838038290934166,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_position": [
+      35.4758,
+      19.9825
+    ],
+    "path_length_m": 38.1566,
+    "wall_seconds": 9.52,
+    "algorithm": "ORCA"
+  },
+  {
+    "mapId": "map4",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 37.1,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.02085433041126991
+  },
+  {
+    "mapId": "map5",
+    "algorithm": "Naive",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.0364532470703125,
+    "sim_time_s": 30.1,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map5",
+    "algorithm": "ORCA",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.0364532470703125,
+    "sim_time_s": 30.1,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map5",
+    "algorithm": "VO",
+    "status": "success",
+    "collisions": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.0364532470703125,
+    "sim_time_s": 30.1,
+    "safety_violations": 0
+  },
+  {
+    "mapId": "map6",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 34.133,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.020375469397648758
+  },
+  {
+    "mapId": "map6",
+    "status": "success",
+    "sim_time_s": 34.133,
+    "goal_distance_m": 0.020375469397648758,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_position": [
+      35.4841,
+      22.4872
+    ],
+    "path_length_m": 36.5723,
+    "wall_seconds": 9.41,
+    "algorithm": "ORCA"
+  },
+  {
+    "mapId": "map6",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 34.133,
+    "collisions": 0,
+    "safety_violations": 0,
+    "contact_labels": [
+      "ground"
+    ],
+    "goal_distance_m": 0.020375469397648758
+  }
+]

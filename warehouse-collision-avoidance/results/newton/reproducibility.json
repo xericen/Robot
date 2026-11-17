@@ -1,0 +1,101 @@
+{
+  "frames": 5400,
+  "checks": [
+    {
+      "algorithm": "naive",
+      "seed": 42,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "naive",
+      "seed": 43,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "naive",
+      "seed": 44,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "naive",
+      "seed": 45,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "naive",
+      "seed": 46,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "vo",
+      "seed": 42,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "vo",
+      "seed": 43,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "vo",
+      "seed": 44,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "vo",
+      "seed": 45,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "vo",
+      "seed": 46,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "orca",
+      "seed": 42,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "orca",
+      "seed": 43,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "orca",
+      "seed": 44,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "orca",
+      "seed": 45,
+      "equal": true,
+      "differences": {}
+    },
+    {
+      "algorithm": "orca",
+      "seed": 46,
+      "equal": true,
+      "differences": {}
+    }
+  ],
+  "diagnosis": {
+    "physics": "newton_warehouse.run: CPU XPBD, 고정 frame_dt / 2 서브스텝. 병렬 리덕션/접촉 순서와 라이브러리 버전 변경은 비결정성 후보.",
+    "spawn": "experiments.scenarios 및 warehouse_maps.apply_map: np.random.default_rng(seed), 시뮬레이션 시작 전 스폰. 벽시계 스폰 없음.",
+    "float_order": "algorithms.orca: 입력 이웃 순서대로 제약 처리. 현재 기본값은 정렬 없이 고정 순서. CPU/NumPy/Warp 버전이 바뀌면 연산 순서 차이 가능.",
+    "excluded": "wall_time/algo_time/planning_time은 실측 실행시간이므로 재현성 동일 비교에서 제외. RRT는 벽시계 제한이 있으므로 이 검증은 A*로 고정."
+  }
+}

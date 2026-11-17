@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "button_started_worker": true,
+  "first_completed_case": "success",
+  "single_worker_admission": true,
+  "complete_60_case_results_previously_verified": true,
+  "terminated_worker_detected": true
+}

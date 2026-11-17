@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "evidence": {
+    "easy": {
+      "robots": 1,
+      "workers": 2,
+      "bodies": 3
+    },
+    "medium": {
+      "robots": 1,
+      "workers": 4,
+      "bodies": 5
+    },
+    "hard": {
+      "robots": 3,
+      "workers": 7,
+      "bodies": 10
+    },
+    "crowded": {
+      "robots": 5,
+      "workers": 12,
+      "bodies": 17
+    },
+    "comparison": [
+      {
+        "algorithm": "Naive",
+        "status": "success",
+        "sim_time_s": 31.3,
+        "collisions": 0,
+        "safety_violations": 0,
+        "goal_distance_m": 0.029773949338687947
+      },
+      {
+        "algorithm": "VO",
+        "status": "success",
+        "sim_time_s": 30.6,
+        "collisions": 0,
+        "safety_violations": 0,
+        "goal_distance_m": 0.026180372178196958
+      },
+      {
+        "algorithm": "ORCA",
+        "status": "success",
+        "sim_time_s": 30.833,
+        "collisions": 0,
+        "safety_violations": 1,
+        "goal_distance_m": 0.0219620109308147
+      }
+    ],
+    "avoidance": {
+      "time": 10.133333,
+      "lateral_target": 0.4896415607954446,
+      "position": [
+        13.783946990966797,
+        13.7822265625
+      ]
+    },
+    "2d_matches_newton": true
+  },
+  "errors": []
+}

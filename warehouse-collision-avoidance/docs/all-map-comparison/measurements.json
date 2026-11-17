@@ -1,0 +1,434 @@
+[
+  {
+    "mapId": "map1",
+    "mapName": "Map 1: Standard",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map1",
+    "mapName": "Map 1: Standard",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map1",
+    "mapName": "Map 1: Standard",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map2",
+    "mapName": "Map 2: Horizontal",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "path_length_m": 34.1877,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027111618124139314,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0188,
+      -0.0035
+    ]
+  },
+  {
+    "mapId": "map2",
+    "mapName": "Map 2: Horizontal",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "path_length_m": 34.1877,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027111618124139314,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0188,
+      -0.0035
+    ]
+  },
+  {
+    "mapId": "map2",
+    "mapName": "Map 2: Horizontal",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 31.567,
+    "path_length_m": 34.1877,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027111618124139314,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0188,
+      -0.0035
+    ]
+  },
+  {
+    "mapId": "map3",
+    "mapName": "Map 3: Zigzag",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 32.133,
+    "path_length_m": 34.8809,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0295148127502277,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0153,
+      0.0115
+    ]
+  },
+  {
+    "mapId": "map3",
+    "mapName": "Map 3: Zigzag",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 32.133,
+    "path_length_m": 34.8809,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0295148127502277,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0153,
+      0.0115
+    ]
+  },
+  {
+    "mapId": "map3",
+    "mapName": "Map 3: Zigzag",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 32.133,
+    "path_length_m": 34.8809,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0295148127502277,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0153,
+      0.0115
+    ]
+  },
+  {
+    "mapId": "map4",
+    "mapName": "Map 4: Maze",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 34.1,
+    "path_length_m": 36.9603,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027914991841756706,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0156,
+      0.0112
+    ]
+  },
+  {
+    "mapId": "map4",
+    "mapName": "Map 4: Maze",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 34.1,
+    "path_length_m": 36.9603,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027914991841756706,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0156,
+      0.0112
+    ]
+  },
+  {
+    "mapId": "map4",
+    "mapName": "Map 4: Maze",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 34.1,
+    "path_length_m": 36.9603,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.027914991841756706,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.0156,
+      0.0112
+    ]
+  },
+  {
+    "mapId": "map5",
+    "mapName": "Map 5: Dense",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map5",
+    "mapName": "Map 5: Dense",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map5",
+    "mapName": "Map 5: Dense",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 30.1,
+    "path_length_m": 32.9635,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.0364532470703125,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.02,
+      0.0
+    ]
+  },
+  {
+    "mapId": "map6",
+    "mapName": "Map 6: Fishbone",
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 31.8,
+    "path_length_m": 34.3078,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.02560192833362112,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.019,
+      -0.0035
+    ]
+  },
+  {
+    "mapId": "map6",
+    "mapName": "Map 6: Fishbone",
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 31.8,
+    "path_length_m": 34.3078,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.02560192833362112,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.019,
+      -0.0035
+    ]
+  },
+  {
+    "mapId": "map6",
+    "mapName": "Map 6: Fishbone",
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 31.8,
+    "path_length_m": 34.3078,
+    "collisions": 0,
+    "safety_violations": 0,
+    "goal_distance_m": 0.02560192833362112,
+    "common_traffic": true,
+    "planner": "astar",
+    "worker_count": 4,
+    "seed": 42,
+    "robot_speed_mps": 1.2,
+    "safety_distance_m": 0.35,
+    "contact_labels": [
+      "ground"
+    ],
+    "final_velocity": [
+      0.019,
+      -0.0035
+    ]
+  }
+]

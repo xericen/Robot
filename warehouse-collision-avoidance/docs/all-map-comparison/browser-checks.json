@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "six_map_conditions": 18,
+  "all_map_methods": 3,
+  "replay_maps": [
+    "map6",
+    "map1"
+  ],
+  "reset_common_spawns": true,
+  "single_map_preserved": true,
+  "previous_results_retained": true,
+  "errors": []
+}

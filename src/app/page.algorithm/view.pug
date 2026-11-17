@@ -1,0 +1,101 @@
+p(role="alert", *ngIf="pageError", class="px-6 py-3 text-sm text-red-600") {{pageError}} 페이지를 새로고침해 최신 기록을 확인해주세요.
+
+.project-page#algorithm-description(role="tabpanel", aria-labelledby="algorithm-tab-description", [hidden]="sectionView !== 'description'")
+    .cover
+        span ROBOT NAVIGATION RESEARCH
+    main
+        .page-icon 🤖
+        .breadcrumb 강의실 / 알고리즘 / 프로젝트
+        .heading
+            h1 알고리즘
+            span.badge 프로젝트 계획
+        p.subtitle Warehouse Collision Avoidance
+        .intro
+            strong 2차원 공간에서, 안전하게 목적지까지
+            p 로봇 뉴턴이 출발점에서 목적지까지 이동하면서 여러 명의 보행자를 회피하는 시뮬레이션을 구현합니다. 군중 규모를 늘려 Naive, VO, ORCA 기반 방식의 주행 성능과 계산 비용을 비교합니다.
+        .properties
+            .property
+                span 실험 환경
+                strong Newton 1.7.0 CPU 강체 시뮬레이션 + Viser 2D/3D 뷰어
+            .property
+                span 주요 Input Scale
+                strong 이동 에이전트 수 n (R0 제외)
+            .property
+                span 비교 조건
+                strong 동일하거나 유사한 환경에서 3가지 방식 비교
+        section
+            .section-title
+                h2 비교할 알고리즘
+                span 3가지 방식
+            .method-grid
+                article.method(*ngFor="let method of methods")
+                    h3 {{method.name}}
+                    small {{method.label}}
+                    p {{method.detail}}
+        section
+            h2 실험 설계
+            .experiment
+                .scale
+                    span INPUT SCALE
+                    h3 군중의 수를 점차 증가
+                    p 보행자 수별로 세 알고리즘을 실행하고, 같은 초기 배치와 이동 조건에서 결과를 비교합니다.
+                .conditions
+                    h3 고정 실험 조건
+                    ul
+                        li 6개 맵 · easy / medium / hard / crowded 4단계
+                        li 전역 탐색 A* / Dijkstra / RRT · 작업자 동적 순찰
+                        li 시드 42~46 고정 · 5400프레임 한도 (기본 180초)
+                        li success: 목표 0.25m 이내 및 속도 0.02m/s 이하 · 한도 내 미도달 timeout
+            p.caption 스윕은 Map 1 Standard · A* · 동적 순찰 · 이동 에이전트 2/4/9/16개 · 각 알고리즘과 시드 5개로 총 60회입니다. hard는 작업자 7명과 다른 로봇 2대를 포함합니다. Pygame 예비 실험은 사전 타당성 검증 데이터로 유지합니다.
+        section
+            h2 평가 지표
+            .table-scroll
+                table
+                    thead
+                        tr
+                            th 지표
+                            th 단위 / 기준
+                            th 측정 내용
+                    tbody
+                        tr(*ngFor="let metric of metrics")
+                            td {{metric.name}}
+                            td {{metric.unit}}
+                            td {{metric.detail}}
+            p.caption 실패한 실험의 도달 시간은 성공한 실험과 구분합니다. 회피 계산시간은 choose_velocity 함수만 측정한 프레임당 평균·최악(ms)과 스텝 수로 기록하며 물리·렌더링·전역 탐색을 제외합니다. 충돌은 바닥을 제외한 접촉 진입, 안전거리 위반은 동적 에이전트 안전반경 진입 횟수입니다.
+        section
+            .section-title
+                h2 결과 시각화 계획
+                span.badge Newton 실측 CSV
+            .chart-plan
+                .chart-icon ↗
+                div
+                    h3 군중 규모에 따른 성능과 계산 비용
+                    p X축은 군중 수, 각 계열은 Naive · VO · ORCA로 구성합니다. 도달 시간, 이동 거리, 충돌·안전거리 위반, 성공률, Runtime을 지표별 그래프로 비교할 예정입니다.
+                    p 특히 Runtime의 증가 추세를 분석하고, 가능한 경우 구현 조건에 맞는 이론적 시간 복잡도와 실측 결과를 함께 비교합니다.
+            p.caption Newton 실측 결과는 구현의 알고리즘 비교 탭에서 저장 CSV로 확인합니다. 스윕 그래프는 results/newton/figs에 생성하며, 오차막대는 시드별 표본 표준편차입니다.
+        section
+            .section-title
+                h2 구현 및 실험 단계
+                span 진행 상황을 클릭해 기록
+            button.step(*ngFor="let step of steps; let i = index", type="button", [disabled]="!canEdit || pageBusy", (click)="toggleStep(step)", [attr.aria-pressed]="step.done")
+                span.checkbox([class.checked]="step.done") {{step.done ? '✓' : ''}}
+                span.step-number {{i + 1}}
+                span.step-copy
+                    strong {{step.title}}
+                    small {{step.detail}}
+                span.step-status {{step.done ? '완료' : '예정'}}
+        section
+            h2 프로젝트 메모
+            .note-input
+                input(type="text", [disabled]="!canEdit || pageBusy", [(ngModel)]="newNote", (keyup.enter)="addNote()", placeholder="실험 조건이나 구현 아이디어를 기록하세요", aria-label="프로젝트 메모")
+                button(type="button", [disabled]="!canEdit || pageBusy", (click)="addNote()") 추가
+            p.caption(*ngIf="!notes.length") 아직 작성된 메모가 없습니다.
+            .note(*ngFor="let note of notes; let i = index")
+                span {{note.text}}
+                small {{note.date}}
+                button(type="button", [disabled]="!canEdit || pageBusy", (click)="removeNote(i)") 삭제
+            p.save-message(role="status") {{savedMessage}}
+            p.caption 진행 상황과 메모는 이 페이지에 공유된 계정만 접근할 수 있으며, 서버에 저장됩니다.
+
+div#algorithm-implementation(role="tabpanel", aria-labelledby="algorithm-tab-implementation", [hidden]="sectionView !== 'implementation'")
+    wiz-page-algorithm-run(#simulation="", [embedded]="true")

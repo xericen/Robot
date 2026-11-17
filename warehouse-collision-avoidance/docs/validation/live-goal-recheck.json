@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "base_url": "https://project.wizide.com",
+  "evidence": {
+    "moving_before_pause": [
+      4.7076592445373535,
+      8.223983764648438
+    ],
+    "pause_time": 3.266667,
+    "requested_frame_limit": 180,
+    "frame_limit": 1381,
+    "status": "success",
+    "sim_time": 20.366667,
+    "position": [
+      22.76968765258789,
+      8.000309944152832
+    ],
+    "velocity": [
+      0.01942872814834118,
+      0.0015049626817926764
+    ],
+    "goal": [
+      22.8,
+      8
+    ],
+    "distance": 0.030313931962223768,
+    "path_length": 21.5899,
+    "svg_position": "translate(569.2421913146973 199.9922513961792)",
+    "reset": true
+  },
+  "errors": []
+}

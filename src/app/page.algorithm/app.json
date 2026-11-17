@@ -1,0 +1,12 @@
+{
+    "id": "page.algorithm",
+    "mode": "page",
+    "title": "/algorithm",
+    "namespace": "algorithm",
+    "category": "course",
+    "viewuri": "/algorithm",
+    "preview": "",
+    "controller": "base",
+    "layout": "layout.sidebar",
+    "template": "wiz-page-algorithm()"
+}

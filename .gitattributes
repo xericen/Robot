@@ -1,0 +1,5 @@
+* text=auto
+*.csv text eol=lf
+*.png binary
+*.ttf binary
+warehouse-collision-avoidance/fonts/OFL.txt -whitespace

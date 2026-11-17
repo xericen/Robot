@@ -1,0 +1,16 @@
+{
+  "evidence": {
+    "3d_canvas": true,
+    "camera_orbit_zoom": true,
+    "2d_matches_body_q": true,
+    "replay_seek_resume_pause": true,
+    "fullscreen": true,
+    "algorithm_Naive": true,
+    "algorithm_VO": true,
+    "algorithm_ORCA": true,
+    "path_toggle": true,
+    "compare_and_load": true,
+    "collision_record_render": true
+  },
+  "errors": []
+}

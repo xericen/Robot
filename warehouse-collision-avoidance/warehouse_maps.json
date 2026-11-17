@@ -1,0 +1,593 @@
+[
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map1",
+    "mapName": "Map 1: Standard",
+    "description": "기존 상·하단 각 3개 선반과 6m 중앙 직선 통로",
+    "shelfPositions": [
+      [
+        9.5,
+        6.5
+      ],
+      [
+        9.5,
+        19.5
+      ],
+      [
+        17.5,
+        6.5
+      ],
+      [
+        17.5,
+        19.5
+      ],
+      [
+        25.5,
+        6.5
+      ],
+      [
+        25.5,
+        19.5
+      ]
+    ],
+    "shelfRotations": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "aislePaint": {
+      "centreY": 13,
+      "width": 5.8
+    },
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction",
+    "baselineTrafficPreserved": true
+  },
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map2",
+    "mapName": "Map 2: Horizontal",
+    "description": "가로 선반을 엇갈리게 배치하고 중앙 선반의 위·아래 우회 통로 확보",
+    "shelfPositions": [
+      [
+        9,
+        8.5
+      ],
+      [
+        9,
+        16.5
+      ],
+      [
+        19,
+        12.5
+      ],
+      [
+        19,
+        20
+      ],
+      [
+        29,
+        8.5
+      ],
+      [
+        29,
+        16.5
+      ]
+    ],
+    "shelfRotations": [
+      90,
+      90,
+      90,
+      90,
+      90,
+      90
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  },
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map3",
+    "mapName": "Map 3: Zigzag",
+    "description": "세 열의 선반 틈을 번갈아 배치한 지그재그 통로",
+    "shelfPositions": [
+      [
+        10,
+        6.5
+      ],
+      [
+        10,
+        16.5
+      ],
+      [
+        19,
+        9.5
+      ],
+      [
+        19,
+        19.5
+      ],
+      [
+        28,
+        6.5
+      ],
+      [
+        28,
+        16.5
+      ]
+    ],
+    "shelfRotations": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  },
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map4",
+    "mapName": "Map 4: Maze",
+    "description": "U자 막다른 길과 혼합 방향 선반, 위·아래 외곽 우회 경로",
+    "shelfPositions": [
+      [
+        11,
+        20
+      ],
+      [
+        6,
+        16.5
+      ],
+      [
+        11,
+        12
+      ],
+      [
+        20,
+        9
+      ],
+      [
+        29,
+        15
+      ],
+      [
+        21,
+        19.5
+      ]
+    ],
+    "shelfRotations": [
+      90,
+      0,
+      90,
+      0,
+      90,
+      0
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  },
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map5",
+    "mapName": "Map 5: Dense",
+    "description": "중앙 3열 밀집 선반과 3m 폭의 가로·세로 통로",
+    "shelfPositions": [
+      [
+        14,
+        8.5
+      ],
+      [
+        14,
+        18.5
+      ],
+      [
+        20,
+        8.5
+      ],
+      [
+        20,
+        18.5
+      ],
+      [
+        26,
+        8.5
+      ],
+      [
+        26,
+        18.5
+      ]
+    ],
+    "shelfRotations": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "aislePaint": {
+      "centreY": 13.5,
+      "width": 2.8
+    },
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  },
+  {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map6",
+    "mapName": "Map 6: Fishbone",
+    "description": "Fishbone-inspired: 대각선 선반과 V자 우회 통로 (논문 배치의 축소 재현 아님)",
+    "shelfPositions": [
+      [
+        9,
+        7
+      ],
+      [
+        19,
+        11
+      ],
+      [
+        29,
+        7
+      ],
+      [
+        9,
+        19
+      ],
+      [
+        19,
+        22
+      ],
+      [
+        29,
+        19
+      ]
+    ],
+    "shelfRotations": [
+      -45,
+      0,
+      45,
+      45,
+      0,
+      -45
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35,
+        3
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        35,
+        23
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35,
+        23
+      ],
+      [
+        7,
+        23
+      ],
+      [
+        31,
+        23
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  }
+]

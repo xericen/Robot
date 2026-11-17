@@ -1,0 +1,8 @@
+{
+    "id": "warehouse.viewer",
+    "title": "Newton ViewerViser same-origin transport",
+    "route": "/warehouse-viewer/<path:viewer_path>",
+    "category": "",
+    "viewuri": "",
+    "controller": ""
+}

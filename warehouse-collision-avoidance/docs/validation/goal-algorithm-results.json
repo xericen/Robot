@@ -1,0 +1,50 @@
+[
+  {
+    "algorithm": "Naive",
+    "status": "success",
+    "sim_time_s": 21.433,
+    "final_position": [
+      22.7701,
+      7.9947
+    ],
+    "final_velocity": [
+      0.0189,
+      0.0054
+    ],
+    "goal_distance_m": 0.030422130950686403,
+    "termination_reason": "goal_reached",
+    "path_length_m": 22.0893
+  },
+  {
+    "algorithm": "VO",
+    "status": "success",
+    "sim_time_s": 20.467,
+    "final_position": [
+      22.7711,
+      7.9986
+    ],
+    "final_velocity": [
+      0.0191,
+      -0.0051
+    ],
+    "goal_distance_m": 0.028889359896659875,
+    "termination_reason": "goal_reached",
+    "path_length_m": 21.6673
+  },
+  {
+    "algorithm": "ORCA",
+    "status": "success",
+    "sim_time_s": 20.367,
+    "final_position": [
+      22.7697,
+      8.0003
+    ],
+    "final_velocity": [
+      0.0194,
+      0.0015
+    ],
+    "goal_distance_m": 0.030313931962223768,
+    "termination_reason": "goal_reached",
+    "path_length_m": 21.5899
+  }
+]

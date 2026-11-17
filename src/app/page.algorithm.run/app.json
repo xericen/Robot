@@ -1,0 +1,12 @@
+{
+    "id": "page.algorithm.run",
+    "mode": "page",
+    "title": "\ub274\ud134 \uc2dc\ubbac\ub808\uc774\uc158",
+    "namespace": "algorithm.run",
+    "category": "course",
+    "viewuri": "/algorithm/run",
+    "preview": "",
+    "controller": "base",
+    "layout": "layout.sidebar",
+    "template": "wiz-page-algorithm-run([embedded]=\"\")"
+}

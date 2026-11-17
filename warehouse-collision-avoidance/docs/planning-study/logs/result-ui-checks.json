@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "Dijkstra dispatch, rotated 2D/3D, pose telemetry, Resume/Pause/Reset",
+    "RRT actual live dispatch",
+    "Measured static/dynamic 18 rows each, 3 charts, 54 bars, N/A and exact plan/trajectory diagrams"
+  ],
+  "errors": []
+}

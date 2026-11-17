@@ -1,0 +1,20 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+**/deploy-keys/
+# Environments and generated runtime data
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+build/
+bundle/
+warehouse-collision-avoidance/results/live/
+*.log

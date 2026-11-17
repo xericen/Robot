@@ -1,0 +1,30 @@
+{
+  "review_id": "ssblbvzaiguanzwntrpqgkbxmiyweitr",
+  "date": "2026-11-17",
+  "pytest": {
+    "passed": 117,
+    "warnings": 70,
+    "seconds": 105.74
+  },
+  "wiz_build": "passed",
+  "sweep_runs": 60,
+  "comparison_runs": 18,
+  "reproducibility": {
+    "runs": 30,
+    "pairs": 15,
+    "exact_matches": 15
+  },
+  "graphs": {
+    "count": 5,
+    "dpi": 200
+  },
+  "browser": {
+    "csv_rows": 18,
+    "map_charts": 6,
+    "parameter_inputs": 8,
+    "reload": true,
+    "real_timeout_parameter_test": true,
+    "page_errors": 0
+  },
+  "pygame_csv_unchanged": true
+}

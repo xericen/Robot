@@ -1,0 +1,18 @@
+{
+  "command": ".venv/bin/python -m pytest tests --tb=short --show-capture=no",
+  "passed": 45,
+  "failed": 0,
+  "warnings": 28,
+  "elapsed_seconds": 60.19,
+  "checks": [
+    "four presets across four seeds",
+    "initial separation and protected zones",
+    "connected A* and patrol routes",
+    "mesh footprint bounds",
+    "Newton full pose to render root registration",
+    "unchanged simple collider count",
+    "three algorithms avoid and arrive",
+    "archived scene restoration",
+    "nonreciprocal scripted AMRs"
+  ]
+}

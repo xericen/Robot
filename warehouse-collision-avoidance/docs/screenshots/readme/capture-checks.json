@@ -1,0 +1,16 @@
+{
+  "captured_at": "2026-11-17",
+  "comparison_rows": 18,
+  "map_charts": 6,
+  "parameter_inputs": 8,
+  "newton_version": "1.7.0",
+  "simulation_time_s": 1.9,
+  "page_errors": [],
+  "images": [
+    "comparison.png",
+    "settings.png",
+    "simulation-3d.png",
+    "simulation-2d.png"
+  ],
+  "note": "Actual WIZ page and CPU simulation captured; session identifiers excluded."
+}

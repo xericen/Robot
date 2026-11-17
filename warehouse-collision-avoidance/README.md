@@ -1,271 +1,304 @@
-# Warehouse Collision Avoidance Simulator
+# 프로젝트 이름 : Warehouse Collision Avoidance — Newton 물류창고 충돌 회피 시뮬레이터
 
-사람, 이동 로봇, 선반이 공존하는 Newton 3D 물류창고에서 A* 전역 경로와 Naive, Velocity Obstacles(VO), ORCA 지역 충돌 회피를 비교한다. 기존 Pygame 2D 실험 도구와 CSV·그래프는 사전 타당성 검증 데이터로 유지한다.
+**사람과 이동 로봇이 함께 움직이는 물류창고에서 전역 경로 탐색과 지역 충돌 회피 알고리즘을 직접 구현하고, 실제 물리 시뮬레이션·CSV·그래프로 비교하는 프로젝트입니다.**
 
-## 구현 상태
+## 1. 프로젝트 이름과 소개
 
-- 새 기본 창고 38m × 26m, 중앙 통로 6m, 세로 통로 5m, 선반 6개, START/GOAL 보호 반경 3m (기존 24m × 16m 실험은 유지)
-- 작업자와 다른 이동 로봇, 협조/비협조 설정, 에이전트별 반지름·속도
-- 세 알고리즘 공통 격자 A* 전역 경로
-- 서로 다른 Naive·VO·ORCA 구현과 공통 인터페이스
-- Pygame 실시간 UI와 마우스/키보드 제어
-- 5개 시나리오, 5·10·20·40·80명, 반복 횟수와 시드 설정
-- 10개 성능 지표, CSV 저장, 6개 Matplotlib 그래프
-- 기하·A*·알고리즘·지표·재현성·교체 실행 pytest
+이 프로젝트는 로봇이 선반과 작업자를 피해 목적지에 도달하는 과정을 관찰하고, 알고리즘별 안전성·이동 효율·계산 비용을 같은 조건에서 비교하기 위해 만들었습니다. 화면에서 로봇이 움직이는 모습을 확인하는 것과 함께, 실행 결과를 수치로 저장하고 다시 분석할 수 있도록 구성했습니다.
 
-## 설치와 실행
+핵심 구현은 Python 기반 **Newton 1.7.0 CPU 강체 시뮬레이션**입니다. 웹에서는 **WIZ·Angular 대시보드와 Viser 3D 뷰어**를 연결하여 같은 물리 상태를 3D와 2D로 확인합니다. 초기 타당성 검토에 사용한 Pygame 2D 구현과 예비 실험 자료도 보관합니다.
 
-Python 3.11 이상을 권장한다. 이 작업에서는 Python 3.14.4와 pygame-ce 2.5.8로 검증했다.
+### 주요 기능
+
+| 기능 | 설명 |
+|---|---|
+| 6종 창고 맵 | Standard, Horizontal, Zigzag, Maze, Dense, Fishbone 배치를 선택합니다. |
+| 전역 경로 탐색 | A*, Dijkstra, RRT로 선반을 피하는 경로를 계산합니다. |
+| 지역 충돌 회피 | Naive, VO, ORCA를 교체하여 이동 중 주변 에이전트에 대응합니다. |
+| 실제 물리 주행 | Newton 강체의 위치·속도와 접촉 결과를 사용하고 힘 제어로 로봇을 움직입니다. |
+| 3D·2D 동기화 | Viser 3D 화면과 2D Top View가 같은 Newton 상태를 표시합니다. |
+| 실행 제어 | Start, Pause, Resume, Reset, 기록 슬라이더, 경로·위험 표시를 제공합니다. |
+| 18조건 비교 | 6개 맵 × 3개 회피 알고리즘을 공통 작업자 배치로 실행합니다. |
+| 결과 저장 | 도달시간·이동거리·충돌·안전거리 위반·계산시간을 CSV로 저장합니다. |
+| 반복 실험 | 이동 에이전트 수 4단계 × 3개 알고리즘 × 5개 시드, 총 60회를 실행합니다. |
+| 그래프·재현성 | CSV 기반 그래프 5종과 같은 조건의 반복 실행 결과 비교를 제공합니다. |
+
+### 전역 탐색과 지역 회피의 역할
+
+전역 탐색은 선반·벽을 고려해 출발점에서 목적지까지 갈 경로를 만듭니다. 지역 회피는 그 경로를 따라가는 동안 움직이는 작업자와 다른 로봇에 대응할 목표 속도를 계산합니다.
+
+- **A***: 격자에서 실제 이동 비용과 목적지까지의 추정 비용을 함께 사용합니다.
+- **Dijkstra**: 누적 이동 비용을 기준으로 경로를 탐색합니다.
+- **RRT**: 공간에 표본을 생성해 트리를 확장합니다. 이 구현에서 최단 경로 최적성을 보장하지 않습니다.
+- **Naive**: 현재 거리로 위험을 판단해 감속·반발 속도를 계산합니다.
+- **VO**: 상대 위치·속도로 미래 충돌을 예측하고 후보 속도 중 안전한 속도를 선택합니다.
+- **ORCA**: 속도 반평면 제약을 만들고 순차 2차원 선형계획으로 허용 속도를 구합니다.
+
+ORCA는 프로젝트 내부 구현입니다. 외부 RVO2 라이브러리를 사용하지 않으며, 현재 작업자·추가 AMR은 상호 회피에 참여하지 않는 순찰 에이전트이므로 R0가 회피 책임을 전부 부담합니다.
+
+## 2. 사용한 기술
+
+| 구분 | 언어·도구 | 사용 목적 |
+|---|---|---|
+| 시뮬레이션·실험 | Python 3.12 | 알고리즘 구현, 물리 제어, 반복 실험과 결과 저장 |
+| 물리 엔진 | Newton 1.7.0 | 바닥·벽·선반·이동체의 강체와 접촉 계산 |
+| 물리 계산 기반 | NVIDIA Warp 1.19.0 | Newton 계산 실행. 이 프로젝트의 검증은 CPU에서 수행 |
+| 웹 3D 뷰어 | Viser 1.1.1, 브라우저 WebGL | 강체 자세·창고 모델·경로·위험 상태 시각화 |
+| 웹 애플리케이션 | WIZ, Angular, TypeScript | 페이지·API 연동, 실행 제어, 비교 표와 환경 설정 |
+| 템플릿·스타일 | Pug, SCSS | 화면 구조와 반응형 대시보드 구성 |
+| 수치 처리 | NumPy | 위치·속도·벡터 연산과 시뮬레이션 상태 처리 |
+| 실험 분석 | Pandas, Matplotlib | CSV 집계, 평균·표준편차와 한국어 그래프 생성 |
+| 초기 2D 실험 | pygame-ce | 독립 2D 창고 UI와 예비 실험 |
+| 자동 검증 | pytest, Playwright, Chromium | 알고리즘·물리·저장 API·실제 브라우저 흐름 검사 |
+| 버전 관리 | Git, GitHub | 소스·문서·실험 자료 관리 |
+| 그래프 글꼴 | Noto Sans KR | 한국어 그래프 제목·축·범례. SIL OFL 라이선스 포함 |
+
+Newton용 의존성과 Pygame용 의존성은 별도 파일로 관리합니다. 정확한 설치 범위는 [requirements-newton.txt](requirements-newton.txt), [requirements.txt](requirements.txt)를 확인하십시오. Playwright는 브라우저 검증을 실행할 때 추가 설치합니다.
+
+### 기본 환경과 파라미터
+
+- 창고: 38 × 26m, 기본 출발점 (2.5, 13), 목적지 (35.5, 13).
+- 제어 로봇 R0: 반경 0.42m, 질량 14kg. 기본 최대 속도 1.2m/s.
+- 기본 시간 간격: 1/30초. 5400프레임이면 최대 물리시간 180초입니다.
+- 안전거리 여유: 0.35m. VO 예측 구간 3초, 후보 속도 기본 74개.
+- ORCA 예측 구간: 3초. 이웃 거리·개수의 기본값 0은 전체 이웃 처리를 뜻합니다.
+- Fishbone은 논문을 참고한 자체 배치이며, 원 논문의 창고를 그대로 재현한 모델은 아닙니다.
+
+## 3. 실행 화면
+
+아래 네 화면은 **2026-11-17에 현재 WIZ 페이지와 실제 Newton CPU 실행을 Chromium으로 열어 직접 캡처**한 이미지입니다. 화면용 가상 수치나 목업을 사용하지 않았습니다. 3D·2D 화면은 물리시간 1.9초에서 일시정지한 같은 실행입니다.
+
+### Newton 3D 시뮬레이션
+
+![Newton 3D 창고 시뮬레이션: 선반·작업자·로봇·경로와 실행 제어](docs/screenshots/readme/simulation-3d.png)
+
+맵·전역 탐색기·지역 회피 알고리즘을 선택하고 실제 주행을 제어합니다. 마우스 드래그로 시점을 회전하고 휠로 확대할 수 있습니다. 청록색은 제어 로봇과 주행 경로, 주황색은 작업자, 빨간색은 현재 위험 표시입니다. 서버 환경의 캡처에서는 소프트웨어 WebGL 렌더링 안내가 나타납니다.
+
+### 같은 실행의 2D Top View
+
+![Newton 2D Top View: 선반 배치와 동일 물리 상태의 평면 투영](docs/screenshots/readme/simulation-2d.png)
+
+3D와 별도 계산한 애니메이션이 아니라, 같은 Newton 강체 상태를 평면에 투영합니다. 위치·속도·충돌·안전거리와 목표 도달 상태를 함께 확인합니다.
+
+### 알고리즘 비교와 저장 결과
+
+![저장 CSV 18행과 맵별 도달시간 그래프 6개](docs/screenshots/readme/comparison.png)
+
+6개 맵의 Naive·VO·ORCA 결과를 표와 그래프로 확인합니다. 캡처 과정에서 저장 CSV 18행과 맵별 그래프 6개가 표시되는 것을 검사했습니다. 저장 CSV는 요약 지표이므로 프레임 재생은 제공하지 않으며, 현재 세션에서 실행한 강체 기록의 재생과 구분합니다.
+
+### 환경 설정
+
+![공통 물리·회피 파라미터와 실험 환경 설정](docs/screenshots/readme/settings.png)
+
+시드·실행 한도·안전거리·속도와 ORCA·VO·Naive 파라미터를 조정합니다. 회피 파라미터 입력 8개가 실제 표시되는 것을 확인했습니다.
+
+### 실제 CSV로 생성한 분석 그래프
+
+![이동 에이전트 수별 평균 회피 계산시간](results/newton/figs/05_algorithm_time.png)
+
+이 그래프는 기존에 실제 실행한 60회 스윕의 CSV를 읽어 생성했습니다. y축은 로그 척도이며 오차막대는 시드 간 표본 표준편차입니다. 위 네 화면의 새 캡처 시점에 60회 전체를 다시 실행한 결과는 아닙니다.
+
+[도달시간](results/newton/figs/01_arrival_time.png), [이동거리](results/newton/figs/02_path_length.png), [충돌·안전거리 위반](results/newton/figs/03_collision_safety.png), [성공률](results/newton/figs/04_success_rate.png) 그래프와 [실측 결과 설명](docs/newton_result_summary.md)도 함께 제공합니다.
+
+## 4. 실행 방법
+
+### 4-1. 저장소 준비
+
+Linux·macOS의 Bash와 Python 3.12를 기준으로 작성했습니다. 독립 Python 시뮬레이터는 이 저장소만으로 실행할 수 있으며, WIZ 웹 페이지는 아래의 기존 WIZ 프로젝트 연동 단계가 필요합니다.
 
 ```bash
-cd warehouse-collision-avoidance
-python -m venv .venv
+git clone https://github.com/xericen/Robot.git
+cd Robot/warehouse-collision-avoidance
+
+python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements-newton.txt
+```
+
+Windows에서는 가상환경 활성화에 `.venv\Scripts\activate`를 사용합니다. 플랫폼별 Newton·Warp 설치 가능 여부는 사용 환경에서 확인해야 합니다. 아래 명령은 활성화된 가상환경에서 실행합니다.
+
+### 4-2. 가장 먼저 CPU 시뮬레이션 실행
+
+```bash
+python newton_warehouse.py \
+  --algorithm orca \
+  --scenario medium \
+  --agents 4 \
+  --map map1 \
+  --planner astar \
+  --seed 42 \
+  --frames 5400 \
+  --viewer null
+```
+
+`--viewer null`은 3D 창 없이 실제 Newton CPU 계산을 실행합니다. GPU가 필요한 실행 경로로 설정하지 않았습니다. 완료 결과에서 성공 여부·도달시간·이동거리·충돌 등을 확인하고, 해당 실행의 CSV를 읽을 수 있습니다.
+
+- `--algorithm`: `naive`, `vo`, `orca`.
+- `--map`: `map1`부터 `map6`까지.
+- `--planner`: `astar`, `dijkstra`, `rrt`.
+- `--traffic-mode`: `static` 또는 `dynamic`.
+- `--common-traffic`: 맵 비교용 공통 작업자 배치를 적용합니다.
+- `--parameters '{"vo_candidates":74,"orca_horizon_s":3}'`: 회피 파라미터를 부분 변경합니다.
+
+목표와의 거리가 0.25m 이내이고 실제 속력이 0.02m/s 이하일 때 성공으로 기록합니다. 지정 프레임 안에 만족하지 못하면 `timeout`입니다. 목표 도달 성공과 무충돌 여부는 각각 평가합니다.
+
+### 4-3. 브라우저에서 독립 3D 뷰어 열기
+
+```bash
+python newton_warehouse.py \
+  --algorithm orca --scenario medium --agents 4 \
+  --map map1 --planner astar --frames 5400 \
+  --viewer viser --port 8080
+```
+
+실행 로그의 Viser 주소를 브라우저에서 엽니다. 같은 PC라면 일반적으로 `http://localhost:8080`입니다. 원격 서버에서 실행한다면 포트 접근이나 SSH 포워딩이 필요합니다. 이 명령은 Viser 시각화 실행이며, WIZ의 Start·Pause·기록 탐색 대시보드는 다음 연동에서 제공합니다.
+
+### 4-4. WIZ 구현 페이지 연결과 사용 순서
+
+이 저장소는 전체 서비스 중 알고리즘 관련 부분을 추출한 것입니다. 기존 프로젝트에 있는 `base` 컨트롤러, `layout.sidebar`, `portal/season` 서비스·세션, `component.page.share` 등 공통 기능을 사용합니다. 공통 서비스의 계정·DB 설정은 저장소에 포함하지 않습니다.
+
+1. 기존 WIZ 프로젝트 루트에 이 저장소의 `warehouse-collision-avoidance/`와 `src/`를 같은 상대 경로로 병합합니다.
+2. 해당 WIZ 프로젝트의 `warehouse-collision-avoidance/.venv`에 위 Newton 의존성을 설치합니다.
+3. WIZ IDE에서 일반 빌드합니다.
+4. `/algorithm?section=implementation` 또는 `/algorithm/run`을 엽니다.
+5. **시뮬레이션**에서 맵·탐색기·작업자 모드·회피 알고리즘을 선택하고 **Start**를 누릅니다.
+6. **Pause / Resume**으로 실제 계산을 제어하고, **Reset**으로 출발 상태를 재생성합니다.
+7. **3D View / 2D Top View**로 표현을 바꾸고 경로·위험 표시를 확인합니다.
+8. 완료된 세션 기록은 슬라이더로 탐색할 수 있습니다. **알고리즘 비교**에서는 전체 18조건 실행이나 선택 맵 3조건 실행을 사용합니다.
+
+전체 맵 비교는 시작할 때 시드·속도·안전거리·프레임 한도 등을 고정합니다. 기본 비교는 medium, 시드 42, 공통 작업자 배치입니다. **저장 CSV 불러오기**는 현재 설정과 일치하는 결과를 재계산 없이 읽습니다.
+
+실시간 Start는 경로 길이와 속도에 비해 지나치게 짧은 실행 한도를 자동 보정할 수 있습니다. CLI와 비교 실험은 지정된 한도를 사용하므로, 같은 프레임 숫자만 보고 동일 조건이라고 판단하지 말고 저장된 메타데이터도 확인하십시오.
+
+### 4-5. 전체 맵 비교·인원별 스윕·재현성 검증
+
+```bash
+# 6개 맵 × Naive/VO/ORCA = 18회
+python newton_experiments.py compare
+
+# Map1에서 인원 4단계 × 3개 방식 × 시드 5개 = 60회
+python newton_experiments.py sweep
+
+# 스윕 CSV로 한국어 그래프 5종 생성
+python plot_newton_results.py
+
+# Map1/medium/A*에서 3개 방식 × 시드 5개 × 2회 = 30회
+python newton_experiments.py reproducibility
+```
+
+반복 실험은 CPU에서 순차 실행하므로 시간이 걸립니다. 짧은 동작 확인에는 `--frames 30`을 사용할 수 있지만 목적지까지 갈 시간이 부족하여 timeout이 정상적으로 나올 수 있습니다. 짧게 실행한 결과를 정식 성능 측정과 섞지 마십시오.
+
+스윕의 입력 크기 n은 **R0를 제외한 이동 에이전트 수**입니다.
+
+| 시나리오 | 작업자 | 다른 AMR | n |
+|---|---:|---:|---:|
+| easy | 2 | 0 | 2 |
+| medium | 4 | 0 | 4 |
+| hard | 7 | 2 | 9 |
+| crowded 스윕 | 12 | 4 | 16 |
+
+### 4-6. 결과 파일과 지표 읽기
+
+| 경로 | 내용 |
+|---|---|
+| `results/newton/<map>_<algorithm>_<scenario>_<seed>.csv` | 개별 Newton 실행 요약 |
+| `results/newton/sweep_agent_count.csv` | 60회 스윕 통합 결과 |
+| `results/newton/figs/` | CSV 기반 그래프 5종과 수치 요약 |
+| `results/newton/reproducibility.json` | 동일 조건 반복 비교 결과 |
+| `results/planning/` | 전역 탐색 비교 결과 |
+| `results/csv/`, `results/figures/` | 이전 Pygame 예비 실험 |
+| `results/live/` | 로컬 실행 세션·강체 기록. Git 업로드 제외 |
+
+같은 맵·알고리즘·시나리오·시드로 재실행하면 개별 CSV는 덮어씁니다. 속도·탐색기·안전거리 등 나머지 조건은 CSV 열에 보관하므로, 설정별 이력을 남기려면 실행 전에 기존 결과를 별도 위치에 복사하십시오.
+
+- `arrival_time_s`: 성공한 실행의 도달 물리시간. 실패는 빈 값입니다.
+- `path_length_m`: 실제 R0 위치 변화로 누적한 거리입니다.
+- `collision_count`: 바닥을 제외한 R0의 접촉 진입 횟수입니다.
+- `safety_violation_count`: 동적 에이전트와의 안전거리 위반 진입 횟수입니다.
+- `algo_time_avg_ms / algo_time_max_ms`: 회피 함수만 측정한 평균·최악 계산시간입니다.
+- `wall_time_s`: 초기화·전역 탐색·물리·회피·렌더링 등을 포함한 전체 실행시간입니다.
+- `replan_count`: 초기 계획 이후 재탐색 횟수이며, 현재 온라인 재탐색은 미구현이므로 0입니다.
+
+계산시간과 물리시간은 다른 값입니다. 그래프의 도달시간은 성공 실행만 집계하고, 충돌·거리·성공률·회피 계산시간은 실패 실행도 포함합니다. 정의와 파라미터는 [실험 설계 문서](docs/newton_experiments.md)를 참고하십시오.
+
+### 4-7. 테스트와 초기 Pygame 구현
+
+저장소의 상위 `src/` 구조를 유지한 상태에서 다음 명령을 실행합니다.
+
+```bash
+python -m pytest
+```
+
+현재 구현은 이전 업로드 검증에서 **117개 테스트**를 통과했습니다. 이번 README 갱신에서는 새 실행 화면 캡처, 저장 표·설정 UI, CLI 실행과 문서 링크를 확인합니다. 기존 결과와 이번 검증을 구분해 기록합니다.
+
+Pygame 2D 실험도 사용하려면 추가 의존성을 설치합니다.
+
+```bash
+python -m pip install -r requirements.txt
 python main.py --algorithm orca --agents 20 --scenario warehouse --seed 42
 ```
 
-UI에서는 알고리즘, 시작/일시정지, 초기화, 에이전트 수, 속도, 시드를 버튼으로 바꿀 수 있다. `P`, `S`, `C`는 각각 경로, 안전거리, 충돌 위험 표시를 전환하며 `Esc`로 종료한다.
+GUI가 없는 환경의 간단한 렌더링 검사는 `python main.py --headless-steps 5`로 실행합니다. Pygame 예비 데이터와 Newton 결과를 같은 물리 엔진의 실험으로 합치지 마십시오.
 
-## Newton 3D 최소 프로토타입
-
-기존 Naive·VO·ORCA 구현과 분리된 Newton 1.7.0 연동 스모크 테스트다. 바닥, 고정 선반 2개, 동적 구형 로봇을 Newton 강체로 생성하고, 평면 PD 힘으로 목표점까지 이동시킨다. 상태 배열과 접촉 버퍼를 읽어 최종 위치·속도·접촉 대상을 JSON으로 출력한다.
-
-```bash
-uv venv .venv --python python3.12
-uv pip install --python .venv/bin/python -r requirements-newton.txt
-.venv/bin/python newton_minimal.py --viewer null --frames 720
-.venv/bin/python newton_minimal.py --viewer viser --frames 720 --port 8080
-```
-
-GUI가 없는 서버에서는 `ViewerNull`을 사용한다. `ViewerViser`는 실행 중 `http://localhost:8080`에서 볼 수 있으며, `ViewerGL`은 디스플레이/OpenGL 컨텍스트가 있는 환경에서만 사용한다. 이 프로토타입은 Newton 물리 연동 검증 범위이며 세 회피 알고리즘의 Newton 어댑터는 아직 연결하지 않았다.
-
-## Newton 물류창고 통합 실행
-
-`newton_warehouse.py`는 기존 A*와 Naive·VO·ORCA 구현을 Newton 1.7.0 강체 시뮬레이션에 연결한다. 알고리즘은 Newton에서 읽은 위치·속도를 입력받아 목표 속도를 반환하고, 공통 힘 제어기가 로봇 강체에 적용한다. 작업자와 추가 로봇도 Newton 동적 강체이며 바닥·벽·선반은 고정 충돌 형상이다.
-
-```bash
-.venv/bin/python newton_warehouse.py --algorithm orca --scenario crowded --agents 16 --frames 360 --viewer null
-.venv/bin/python newton_warehouse.py --algorithm vo --scenario warehouse --agents 8 --frames 1800 --viewer viser --port 8080
-```
-
-프레임 한도 내 미도달은 `status: timeout`이며, 목표까지 0.25m 이내이고 실제 속도가 0.02m/s 이하인 경우에만 `success`로 기록한다. 웹 통합 화면은 Newton CPU를 실행 중 제어하고 ViewerViser 3D와 2D Top View를 제공한다. 정식 장시간 비교 실험은 CLI에서 수행한다.
-
-## 반복 실험과 그래프
-
-기본값은 물류창고 시나리오, 5·10·20·40·80명, 각 조건 10회다.
-
-```bash
-python -m experiments.runner --scenarios warehouse --counts 5 10 20 40 80 --repeats 10 --seed 42
-python -m experiments.analysis
-```
-
-모든 시나리오를 실행하려면 다음과 같이 지정한다.
-
-```bash
-python -m experiments.runner \
-  --scenarios basic warehouse crossing multi_robot crowded \
-  --counts 5 10 20 40 80 --repeats 10
-```
-
-CSV는 `results/csv/`, 그래프는 `results/figures/`에 저장된다. 실패한 실행의 도달 시간은 빈 값이며 임의의 제한 시간을 평균에 넣지 않는다.
-
-## 알고리즘 실제 구현
-
-### Naive
-
-현재 거리만 검사한다. 안전거리 안에서는 목표 속도를 줄이고 가까운 에이전트 반대 방향의 반발 벡터를 더한다. 미래 충돌 예측은 없다. 스텝당 `O(n)`이다.
-
-### Velocity Obstacles
-
-상대 위치와 상대 속도의 이차방정식으로 3초 범위 충돌을 예측한다. 선호 속도·정지와 3개 속력 × 24개 방향을 평가해 안전하면서 선호 속도에 가장 가까운 후보를 선택한다. 후보 수 `K`에 대해 `O(Kn)`이며 현재 `K=74`다.
-
-### ORCA
-
-각 이웃으로 ORCA 속도 반평면을 생성하고 2차원 순차 선형계획으로 선호 속도에 가까운 허용 속도를 구한다. 협조 에이전트는 회피 책임을 절반씩 나누며 비협조 작업자는 제어 로봇이 전부 부담한다. 제약 생성은 `O(n)`, 현재 투영 구현의 최악 시간은 `O(n²)`이다. 외부 RVO2 라이브러리를 사용하거나 표준 구현이라고 가장하지 않으며, 구현 범위는 `docs/algorithm_analysis.md`에 명시했다.
-
-## 지표
-
-Goal Reaching Time, Path Length, Collision Count, Safety Distance Violations, Success Rate, 알고리즘 누적 시간, 스텝당 평균 시간, 95백분위 시간, Robot Stop Time, Minimum Separation을 실제 시뮬레이션 상태에서 계산한다. 충돌과 안전거리 위반은 상태에 새로 진입한 횟수로 각각 집계한다.
-
-## 이번 검증 결과
+### 주요 파일 구조
 
 ```text
-12 passed
+Robot/
+├── README.md
+├── warehouse-collision-avoidance/
+│   ├── algorithms/             # Naive·VO·ORCA·A*·Dijkstra·RRT
+│   ├── simulator/              # 에이전트·환경·기초 물리·2D 렌더링
+│   ├── experiments/            # 시나리오·지표·초기 반복 실험
+│   ├── newton_warehouse.py      # Newton 강체와 경로·회피 통합
+│   ├── newton_live.py           # 웹 실행 세션과 기록 제어
+│   ├── newton_results.py        # CSV 스키마·저장·조회
+│   ├── newton_experiments.py    # 스윕·18조건·재현성 러너
+│   ├── plot_newton_results.py   # 한국어 통계 그래프
+│   ├── warehouse_maps.json     # 6개 맵 공통 설정
+│   ├── tests/
+│   ├── results/
+│   └── docs/
+└── src/
+    ├── app/page.algorithm/      # 설명·구현 탭
+    ├── app/page.algorithm.run/  # 구현 UI와 API
+    ├── model/newton.py          # 기존 2D 모델
+    ├── route/warehouse.viewer/  # Viser 동일 출처 전송
+    └── assets/warehouse-simulator/
 ```
 
-Pygame은 SDL dummy 드라이버에서 5프레임 렌더링을 완료했다. 예비 실험은 물류창고 시나리오에서 5개 규모 × 3개 알고리즘 × 3회, 총 45회를 실제 실행했다. 20명까지 VO와 ORCA는 3/3 성공했고, 40명과 80명에서는 세 방식 모두 0/3 성공했다. 이 실패와 충돌 수는 CSV와 그래프에 그대로 포함했다. 예비 결과는 반복 3회뿐이므로 최종 발표 통계로 확정하지 않는다.
+## 5. 만든 이유, 목표와 배울 점
 
-## 프로젝트 구조
+### 만든 이유
 
-```text
-warehouse-collision-avoidance/
-├── main.py
-├── newton_minimal.py # Newton 3D 물리 연동 스모크 테스트
-├── newton_warehouse.py # A*·회피 알고리즘·Newton 강체 통합
-├── requirements-newton.txt
-├── algorithms/       # 공통 인터페이스, Naive, VO, ORCA, A*
-├── simulator/        # 에이전트, 물리, 환경, Pygame 렌더링
-├── experiments/      # 시나리오, 지표, 반복 실행, 그래프
-├── tests/
-├── results/csv/
-├── results/figures/
-└── docs/
-```
+물류창고에서는 선반을 피해 목적지까지 가는 경로를 찾는 것만으로 충분하지 않습니다. 같은 통로에 작업자와 다른 로봇이 진입하면 이동 중 충돌 위험을 다시 판단해야 합니다. 경로 길이가 짧아도 주행이 자주 멈추거나 위험한 접근이 반복되면 좋은 이동 방식이라고 보기 어렵습니다.
 
-## 라이브러리와 라이선스
+이 프로젝트는 알고리즘 수업에서 배운 탐색·벡터·기하 계산을 실제로 움직이는 환경에 적용하고, “목표에 도달했는가”, “충돌과 위험 접근은 얼마나 있었는가”, “매 프레임 계산 비용은 얼마인가”를 함께 평가하려는 목적으로 만들었습니다.
 
-- pygame-ce 2.5.8: LGPL-2.1-or-later
-- NumPy: BSD-3-Clause
-- Pandas: BSD-3-Clause
-- Matplotlib: PSF 기반 라이선스
-- pytest: MIT
+### 달성하려는 목표
 
-ORCA 계산은 프로젝트 내부 구현이며 RVO2 바이너리나 코드를 포함하지 않는다.
+1. **알고리즘을 직접 구현하고 설명하기**: Naive·VO·ORCA의 입력, 속도 선택 방식, 제약과 계산량을 코드로 이해합니다.
+2. **공정한 비교 조건 만들기**: 공통 맵·작업자 배치·속도·시드·프레임 한도를 유지하고 비교 대상을 바꿉니다.
+3. **물리 상태로 결과 판단하기**: 화면상 이동 대신 실제 위치·속도·접촉·목표 정지를 기준으로 성공을 판정합니다.
+4. **실험을 재현 가능한 자료로 남기기**: 설정·라이브러리 버전·CSV·그래프·반복 검사 결과를 함께 보존합니다.
+5. **웹으로 관찰 가능한 도구 만들기**: 3D·2D·표·설정 화면으로 알고리즘의 동작과 실패를 확인합니다.
 
-## 알려진 제한과 다음 개선
+### 이 프로젝트에서 배울 수 있는 점
 
-- 다른 작업자와 로봇은 지정 목적지를 왕복하지만 서로 간 회피는 하지 않는다.
-- 동적 이웃 탐색은 전체 검사이며 k-d tree나 uniform grid가 없다.
-- ORCA는 2D 반평면과 순차 LP 범위이며 장애물 ORCA 선분 제약은 A*와 물리 충돌 방지로 대체한다.
-- 40명 이상 밀집 환경의 실패율이 높다. 공간 분할, 정체 해소 전략, 모든 로봇의 상호 ORCA 적용이 다음 개선 대상이다.
-- 최종 보고에는 조건당 10회 이상을 실행하고 평균·표준편차 또는 신뢰구간을 다시 산출해야 한다.
+- 전역 탐색과 지역 회피를 분리하면 맵 계획과 동적 충돌 대응을 각각 검증할 수 있습니다.
+- 이론적 복잡도와 실제 실행시간은 다릅니다. 기본 구현의 Naive는 O(n), VO는 O(Kn), ORCA 순차 투영의 최악은 O(n²)이지만 분기·입력 분포·Python 비용·CPU 상태도 실측에 영향을 줍니다.
+- 알고리즘이 반환한 목표 속도와 Newton 강체의 실제 속도는 다릅니다. 질량·마찰·힘 제어·시간 간격을 함께 조정해야 합니다.
+- 같은 시드만으로 공정한 비교가 완성되지는 않습니다. 생성 위치·작업자 경로·순찰 모드·프레임 한도까지 일치해야 합니다.
+- 도달 성공, 무충돌, 안전거리 유지, 짧은 경로와 낮은 계산 비용은 서로 다른 평가 축입니다.
+- 실패 실행의 도달시간을 제한시간으로 채우면 평균이 왜곡됩니다. 실패·결측을 구분해 기록해야 합니다.
+- 웹 화면과 독립 물리 워커를 연결할 때는 실행 상태·세션 종료·동일 출처 전송·기록 재생의 일관성이 필요합니다.
 
-세부 지표 정의는 `docs/experiment_methodology.md`, 복잡도 분석은 `docs/algorithm_analysis.md`를 참고한다.
+### 현재 결과와 다음 개선 목표
 
-## 웹 3D 통합 뷰어 (2026-11-09)
+기존에 수행한 Map1 인원별 60회 스윕에서는 모든 실행이 도달했지만 일부 조건에 충돌·안전거리 위반이 있었습니다. 공통 작업자 배치를 사용한 6맵18조건에서는 주행 간섭이 적어 세 방식의 이동 지표가 같게 나오는 조건도 있었습니다. 이 결과로 특정 알고리즘의 일반적 우월성이나 무충돌을 보장하지 않습니다.
 
-`/algorithm?section=implementation`에서 기본 3D View와 분석용 2D Top View를 전환한다. 두 뷰는 동일한 Newton `body_q`·`body_qd` 기록과 서버 시간 상태를 사용한다.
+다음 개선 목표는 교차 통행 시점과 밀집도를 통제한 실험, 더 다양한 시드·인원 조건, 주변 에이전트의 상호 회피, 공간 인덱스, 온라인 재탐색입니다. 현재 작업자·추가 AMR은 정해진 경로를 순찰하며 서로 회피하지 않습니다.
 
-- Start: 새 Newton CPU/ViewerViser 세션 실행. 경로 길이·속도에 비해 짧은 실행 한도는 자동 보정하며 알고리즘 변경도 새 실행을 시작한다.
-- Pause / Resume: 실행 중에는 실제 물리 계산 정지·재개.
-- Reset: Newton 모델·강체를 출발 상태로 재생성하고 정지 상태로 유지.
-- 프레임 한도 또는 목표 도달 후: 저장 기록 모드. Resume과 슬라이더는 기록을 재생·탐색한다.
-- 물리 계산 시간과 회피 알고리즘 계산 시간을 각각 표시한다. 접촉·안전거리 지표는 R0 기준이다.
-- 최대 4개 세션, UI 최대 프레임 30~10800 (기본 5400 = 물리 시간 180초), 15분 미사용 시 워커 종료. 완성 기록은 `results/live/{token}/record.json`에 남긴다.
-- 서버는 CPU, 브라우저는 Viser WebGL 렌더러를 사용한다. WIZ의 커스텀 WebSocket 업그레이드 제약은 프로젝트 내부 HTTP 중계로 처리한다.
-- 이전 2D/Pygame 실험과 최소 Newton 프로토타입은 유지한다. 이전 XY 전용 기록에는 3D 자세가 없으므로 새 실행이 필요하다.
+관련 구현 범위와 자료는 [알고리즘 분석](docs/algorithm_analysis.md), [맵·참고 자료](docs/research_layouts.md), [실험 지표 정의](docs/experiment_methodology.md), [실측 결과](docs/newton_result_summary.md)에 정리했습니다.
 
-검증: `.venv/bin/python -m pytest tests` (Newton·레이아웃·모델 정렬 회귀 포함 45개 통과).
-브라우저 회귀 스크립트: `tests/browser_warehouse.py` (Playwright, Chromium, localhost WIZ 필요; CPU 접촉 테스트를 먼저 실행).
-상세 구성·변경 파일·실측 결과·한계는 [3D 검증 기록](docs/newton_3d_validation.md)을 참고한다.
-
-### 목표 도달 및 종료 조건 수정
-
-형상 기본 밀도로 합산되던 로봇 질량(약 359kg)을 제어기 기준인 14kg으로 맞췄다. 작업자는 70kg, 추가 로봇은 12kg이며 형상 밀도로 실제 질량·관성을 계산한다. 바닥/이동 강체 마찰계수 0.05는 구동 바퀴의 낮은 주행 저항을 근사한다. 목표 근처에서는 선호 속도를 줄여 Newton 힘 제어로 감속한다.
-
-기본 실행 한도는 이전 180프레임(6초)에서 5400프레임(180초)으로 늘렸다. 목표 도달 후 정지 조건을 충족하면 즉시 완료하며, 한도를 모두 사용해도 미도달이면 시간 초과로 표시한다. 성공한 마지막 프레임은 경로 기록 간격과 관계없이 반드시 저장한다. 기존 세션/저장 기록에는 이전 물리 설정이 남으므로 화면을 새로고침하고 Start로 새 실행을 시작한다.
-
-### 짧은 실행 한도가 남은 경우의 실시간 주행
-
-실시간 Start는 이전 탭이나 설정에 180프레임(6초)이 남아 있어도 경로 길이와 최대 속도로 필요한 시간을 계산한다. 주행 여유를 포함한 최소 한도는 `(2 × A* 경로 길이 / 최대 속도 + 10초) × 30fps`이며, 실시간 안전 한도 10800프레임 안에서 요청 한도를 확장한다. 기본 창고·속도 1.2m/s의 180프레임 요청은 1381프레임으로 보정된다. 화면에 보정된 시간을 안내하고 목표 도달·정지 시 즉시 완료한다.
-
-비교 실험/CLI는 지정한 프레임 구간을 그대로 사용하며, 기록 로드는 원본 기록을 재생한다. 결과 메타데이터의 `requested_frame_limit`, `frame_limit`, `frame_budget_extended`로 요청 한도와 실제 한도를 구분한다.
-
-실제 서비스 주소에서도 검증하도록 브라우저 목표 회귀에 `WAREHOUSE_BASE_URL`, `WAREHOUSE_LEGACY_FRAMES` 옵션을 추가했다. Reset 검사는 동시 polling 응답 대신 해당 Reset ACK를 직접 확인한다.
-
-## 확장 창고와 렌더 모델 (2026-11-09)
-
-웹 기본 시나리오는 medium이다. 로봇 수는 제어 로봇 R0를 포함한다.
-
-| 프리셋 | 로봇 | 작업자 | 비고 |
-|---|---:|---:|---|
-| easy | 1 | 2 | 횡단 작업자 1명 |
-| medium | 1 | 4 | 동일 조건 비교 기본값 |
-| hard | 3 | 7 | 요청 범위 로봇 2~4대·작업자 6~8명 내의 기본 구성 |
-| crowded 기본값 | 5 | 12 | 추가 에이전트 수로 밀도 조절 |
-| 이전 실험 | 기존 구성 | 기존 구성 | basic / warehouse / crossing / multi_robot 유지 |
-
-새 창고는 38×26m이며 START=(2.5,13), GOAL=(35.5,13)이다. 3×7m 선반 6개를 x=8/16/24, y=3/16에 배치한다. 중앙 가로 통로는 6m, 선반 열 사이 세로 통로는 5m다. 각 출발/목표 주변 3m에 에이전트 반경을 더한 구역을 초기 배치에서 제외하고, 초기 에이전트끼리 반경 합에 0.35m 이상의 간격을 둔다. 일부 작업자만 중앙 경로를 횡단하고 나머지는 양쪽 세로 통로에서 순찰한다.
-
-`warehouse_visuals.py`는 코드로 만든 저폴리 GLB 렌더 자산이다. AMR은 차체·범퍼·바퀴·라이다, 작업자는 안전모·작업복·사지, 선반은 기둥·보·적재 상자로 구성한다. 별도 렌더 메시이며 Newton collider로 사용하지 않는다. 자산 빌더를 교체하면 물리 코드를 바꾸지 않고 외형을 교체할 수 있다.
-
-새 환경의 단순 충돌체는 AMR cylinder(반경 0.42m, 반높이 0.26m, 14kg/추가 AMR 12kg), 작업자 capsule(반경 0.30m, 반높이 0.55m, 총 높이 1.70m, 70kg), 선반 box(높이 3.2m)다. 안전 여유는 기본 0.35m다. 메시의 body-local 원점을 collider의 강체 중심과 일치시키며 `body_q`의 위치·전체 회전을 렌더 루트에 적용한다. 토크 제어로 직립과 진행 방향을 유지하며 자세를 직접 덮어쓰지 않는다. 별도의 장식용 보행/바퀴 애니메이션은 없다.
-
-Naive·VO·ORCA는 같은 A* 경로·초기 배치·시드·실제 Newton 상태로 R0를 제어한다. 추가 AMR/작업자는 같은 순찰 제어를 사용한다. ORCA는 이 순찰 강체가 상호 회피에 참여한다고 가정하지 않는다. 기존 기록을 로드하면 저장된 크기·선반·강체 종류·자세를 복원한다.
-
-검증: 4개 프리셋×4개 시드의 배치/경로, crowded 0~120명 범위의 인원 보존, 메시/충돌 반경과 전체 자세 정렬, 실제 서비스의 4개 선택/렌더링, medium의 세 알고리즘 비교를 확인했다. 시드 42 medium 단일 실행에서 Naive/VO/ORCA 모두 목표에 도달했고 충돌은 0회였다. 안전거리 위반은 각각 0/0/1회로 그대로 기록한다. hard/crowded의 장시간 도달률과 반복 통계는 아직 검증하지 않았다.
-
-브라우저 회귀:
-```bash
-PYTHONPATH=/tmp/bike-playwright WAREHOUSE_BASE_URL=https://project.wizide.com WAREHOUSE_CHROMIUM=/root/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome /opt/conda/envs/app/bin/python tests/browser_layout.py
-```
-
-## Newton 선반 배치 맵 6종
-
-시뮬레이션 상단의 **Map 1~6 버튼**으로 Default / Horizontal / Zigzag / Maze / Dense / Asymmetric를 전환한다. 기존 주행을 멈추고 충돌체·작업자·A* 경로를 재생성한 뒤 시간 0에서 정지한다. **Start 또는 Resume**으로 출발한다. 기존 38×26m 바닥·외벽과 선반/박스 모델은 유지한다.
-
-맵 설정은 `warehouse_maps.json` 한 곳에서 관리하며 렌더링·Newton 충돌체·A*가 같은 설정을 사용한다. CLI 예: `.venv/bin/python newton_warehouse.py --scenario medium --map map3 --algorithm orca --frames 3600 --viewer null`.
-
-[맵별 배치·검증 결과·실제 Viewer 캡처 6장](docs/warehouse_maps.md). 2026-11-16 검증: pytest 93개 통과, medium/seed42에서 6맵×3알고리즘 18조건 모두 목표 도달 및 선반 접촉 없음. 모든 인원·시드 조건의 무충돌을 보장하는 결과는 아니다.
-
-## 논문을 참고한 레이아웃·전역 경로 비교 (2026-11-16 확장)
-
-현재 여섯 버튼은 **Standard / Horizontal / Zigzag / Maze / Dense / Fishbone**이다. 앞선 Asymmetric 배치와 과거 검증 문서는 이전 버전의 기록이다. 기존 38×26m 바닥·외벽, 선반6개·크기3×7×3.2m와 AMR/작업자 모델을 유지했다. Fishbone은 ±45도 선반을 포함한 **자체 Fishbone-inspired 배치**이며 원 논문의 검증된 배치를 재현한 것이 아니다.
-
-전역 경로 탐색 선택에 기존 **A***와 **Dijkstra / RRT**를 제공한다. 지역 회피 **Naive / VO / ORCA** 선택은 별도로 유지한다. 맵 전환 때 주행을 정지하고 실제 Newton collider·작업자·내비게이션·경로를 재생성한다. 대각선 선반은 메시/box collider/원형 로봇 충돌 검사가 동일한 중심·회전을 사용한다. 2D도 실제 회전을 표시한다.
-
-실험 결과 탭에는 실제 Newton CPU 실행으로 얻은 경로 길이·계획 시간·성공률 그래프, 확장 노드·주행 시간·충돌·재탐색·방향 전환 표와 계획/실제 경로 표시가 있다. **60조건 Newton CPU 실험 실행**으로 재측정할 수 있고 실행 중에는 부분 결과임을 표시한다.
-
-실험 조건: Python3.12.3 / Newton1.7.0 / Warp1.19.0 / CPU, R0 radius0.42m, 안전거리0.35m, 속도1.2m/s, 공통 START(2.5,13)·GOAL(35.5,13), 작업자4명 공통 초기/순찰 조건. 지역 회피는 ORCA 고정. 정적·동적 모드 각각 A*/Dijkstra 각1회, RRT 시드42/43/44 각1회로 총60건을 실제 실행했다. 60건 모두 목표 도달·정지했으며 R0 선반/외벽 접촉은 없었다. 소규모 검증으로 일반적인 우월성·무충돌을 보장하지 않는다.
-
-설정: A*/Dijkstra 0.5m 8연결 격자, RRT max3000회/3초·step1.5m·goal bias0.15·결정적 shortcut. RRT는 최적성을 가정하지 않는다. RRT 확장 노드는 N/A, 반복1회인 탐색기의 분산도 N/A다. 계획 시간(ms)과 실제 이동 시간(simulation seconds)을 분리한다. 재탐색은 초기 계산을 제외한0회이며 온라인 재탐색은 미구현이다.
-
-```bash
-cd warehouse-collision-avoidance
-.venv/bin/python newton_warehouse.py --scenario medium --map map6 --planner rrt --planner-seed 42 --algorithm orca --frames 3600 --viewer null
-.venv/bin/python planning_study.py --rrt-repeats 3
-# numpy/matplotlib가 설치된 분석용 Python:
-python export_planning_study.py
-.venv/bin/python -m pytest tests
-```
-
-- [실험 결과표·그래프·스크린샷·실행 로그](docs/planning-study/README.md)
-- [전체 좌표·회전·참고 자료별 적용/미적용 범위](docs/research_layouts.md)
-- [현재 맵 설정 JSON](warehouse_maps.json)
-- 참고 A: [Zhang et al., IJCAI 2023](https://arxiv.org/html/2305.06436v3), [공식 코드](https://github.com/lunjohnzhang/warehouse_env_gen_public)
-- 참고 B: [Wu et al., 2020 RMFS layout](https://doi.org/10.1177/1729881420978543)
-- 참고 C: [Fishbone RMFS](https://doi.org/10.1016/j.eswa.2024.125166) — 출판사 초록·하이라이트 확인, 본문403 접근 제한.
-- 참고 D: [Moving AI Warehouse](https://benchmarks.pathfinding.ai/mapf-benchmarks/warehouse-maps/) — 고정 시나리오/재현성 참고, 원본 대형 격자를 직접 임포트한 것은 아니다.
-- RRT: [LaValle 저자 자료](https://lavalle.pl/rrtpubs.html)
-
-## Naive·VO·ORCA의 6개 맵 비교 (2026-11-17)
-
-**알고리즘 비교** 탭의 기본 범위는 이제 **6개 맵 전체**다. **6개 맵 · 18조건 비교 실행**을 누르면 Standard → Horizontal → Zigzag → Maze → Dense → Fishbone 순서로 각 맵에서 Naive/VO/ORCA를 실제 Newton CPU로 실행한다. 맵별로 요청을 나누어 진행 상태와 반환된 결과를 표시한다.
-
-전역 탐색기·작업자 모드·인원/시나리오·시드·속도·안전거리·프레임 한도는 실행 시작 시 고정한다. 전체 비교에는 맵 설정의 공통 worker-0~3 초기 위치/왕복 목표를 적용한다. 추가 로봇은 작업자 재배치의 대상이 아니다. hard/crowded의 추가 인원은 해당 맵의 기존 유효 배치를 사용한다. 24×16m 레거시 시나리오에서 전체 비교를 시작하면 38×26m medium(작업자4명)으로 전환한다.
-
-결과 표는 맵·지역 회피 알고리즘별로 구분하며, 각 알고리즘을 누르면 해당 맵의 Newton 3D/2D 기록을 연다. 기록을 Reset해도 공통 작업자 설정을 유지한다. 새 비교가 기존 실행 기록을 삭제하지 않으며, 중간 오류가 나면 반환된 결과를 유지하고 실패한 맵을 표시한다. 기존 **선택한 맵만** 비교도 선택할 수 있다.
-
-기존 **실험 결과 → 60조건 Newton CPU 실험**은 A*/Dijkstra/RRT 전역 탐색 비교이며, 이번 Naive/VO/ORCA 18조건 비교와 별개다. 프레임 한도 내 목표 미도달은 timeout으로 기록한다.
-
-재현 브라우저 검사:
-```bash
-WAREHOUSE_CHROMIUM=/path/to/chromium python tests/browser_all_map_comparison.py
-.venv/bin/python -m pytest tests/test_common_comparison_traffic.py
-```
-
-
-## Newton 결과 저장·계측·반복 실험
-
-Newton 1.7.0 CPU 강체 시뮬레이션 + Viser 2D/3D 뷰어, 전역 탐색 A*/Dijkstra/RRT를 사용한다. 기본 한도는 5400프레임이다. [실험 설계와 파라미터·지표 정의](docs/newton_experiments.md)에 실행법, 저장 스키마, 재현성 및 복잡도 분석을 정리했다.
-
-```bash
-.venv/bin/python newton_experiments.py sweep
-.venv/bin/python plot_newton_results.py
-.venv/bin/python newton_experiments.py compare
-.venv/bin/python newton_experiments.py reproducibility
-```
-
-CSV·그래프·검증 결과는 `results/newton/`에만 저장한다. 스윕은 Map1/A*/동적 순찰, n=2/4/9/16, 시드42~46으로 60회다. hard는 작업자7명과 다른 AMR2대를 포함하므로 n=9이다. 웹 알고리즘 비교에서 저장 CSV를 불러오면 재실행 없이 표·맵별 도달시간 그래프를 볼 수 있다.
-
-| 파라미터 | 기본값 |
-|---|---|
-| ORCA neighborDist / maxNeighbors | 0 / 0 (전체, 기존 제한 없음) |
-| ORCA timeStep / maxSpeed / horizon | 1/30 s / 1.2 m/s / 3 s |
-| VO horizon / K | 3 s / 74 |
-| Naive 안전거리 / 긴급 반응 추가 여유 / 영향거리 | 0.35 m / 0 m / 1.2 m |
-
-환경 설정에서 위 값을 수정한다. Naive 긴급 반경은 반지름 합+안전거리+추가 여유이며 감속/반발 방식이다. 회피 계산시간은 `newton_warehouse.run`의 `choose_velocity` 호출만 감싼 평균·최악·스텝 수로 기록한다. 물리·렌더링·전역 경로 계산은 포함하지 않는다. 실패 실행의 도달시간은 빈 값이다.
-
-2026-11-17 실제 수행한 스윕 60회·18조건 비교·재현성 30회의 [수치 요약과 화면 캡처](docs/newton_result_summary.md)를 제공한다. 일반적인 성능 우열을 단정하지 않으며 충돌·안전거리 위반도 함께 보고한다.
+키 파일·환경 비밀값·DB 설정·실행 세션은 저장소에 포함하지 않으며, 검증 자료의 세션 식별값은 마스킹합니다.

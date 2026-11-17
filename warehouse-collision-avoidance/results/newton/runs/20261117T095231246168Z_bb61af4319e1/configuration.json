@@ -1,0 +1,162 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "ORCA",
+  "seed": 42,
+  "agent_count": 8,
+  "worker_count": 8,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "workers",
+  "encounter": {
+    "mode": "crossing",
+    "population": "workers",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          20.234073729255083,
+          14.818237806100159
+        ],
+        "goal": [
+          20.234073729255083,
+          11.181762193899841
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8386342623190259,
+        "release_time_s": 11.716420012405875
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          14.821301566931856,
+          10.659049154561249
+        ],
+        "goal": [
+          14.821301566931856,
+          15.340950845438751
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9621546323530108,
+        "release_time_s": 7.022106853886414
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          9.437947598511439,
+          15.49801662694516
+        ],
+        "goal": [
+          9.437947598511439,
+          10.50198337305484
+        ],
+        "radius": 0.3,
+        "max_speed": 0.73397647948528,
+        "release_time_s": 2.156027104822238
+      },
+      {
+        "id": "worker-3",
+        "kind": "worker",
+        "position": [
+          15.575498193193413,
+          14.863820040104546
+        ],
+        "goal": [
+          15.575498193193413,
+          11.136179959895454
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8474890901403583,
+        "release_time_s": 8.0692779690273
+      },
+      {
+        "id": "worker-4",
+        "kind": "worker",
+        "position": [
+          16.07456101165127,
+          11.24312385407222
+        ],
+        "goal": [
+          16.07456101165127,
+          14.75687614592778
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8266944013854254,
+        "release_time_s": 8.971696620888077
+      },
+      {
+        "id": "worker-5",
+        "kind": "worker",
+        "position": [
+          21.824478662844612,
+          11.083702372756353
+        ],
+        "goal": [
+          21.824478662844612,
+          14.916297627243647
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7943293916471712,
+        "release_time_s": 14.674242552831007
+      },
+      {
+        "id": "worker-6",
+        "kind": "worker",
+        "position": [
+          23.069811238587715,
+          15.045706633413584
+        ],
+        "goal": [
+          23.069811238587715,
+          10.954293366586416
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7958509002446741,
+        "release_time_s": 14.752412566602274
+      },
+      {
+        "id": "worker-7",
+        "kind": "worker",
+        "position": [
+          19.01657215300868,
+          11.107619742492975
+        ],
+        "goal": [
+          19.01657215300868,
+          14.892380257507025
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7380511808882317,
+        "release_time_s": 11.960906576235274
+      }
+    ]
+  },
+  "scene_hash": "ef926d1d3068d169a391db4c828df0e4e72a9c8d43f5a5ccc7ec17600e581050",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

@@ -1,0 +1,282 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "VO",
+  "seed": 46,
+  "agent_count": 16,
+  "worker_count": 16,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "workers",
+  "encounter": {
+    "mode": "crossing",
+    "population": "workers",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          18.674565403060456,
+          15.432301341164852
+        ],
+        "goal": [
+          18.674565403060456,
+          10.567698658835148
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9354166598510953,
+        "release_time_s": 10.69071128319642
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          24.275435623114795,
+          14.783058812096868
+        ],
+        "goal": [
+          24.275435623114795,
+          11.216941187903132
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7487016371199453,
+        "release_time_s": 16.098609380899973
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          11.36560161844966,
+          10.615988620461133
+        ],
+        "goal": [
+          11.36560161844966,
+          15.384011379538867
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9385757345919981,
+        "release_time_s": 3.823002279600927
+      },
+      {
+        "id": "worker-3",
+        "kind": "worker",
+        "position": [
+          14.61218258480095,
+          10.609405803400701
+        ],
+        "goal": [
+          14.61218258480095,
+          15.390594196599299
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7382562661584268,
+        "release_time_s": 7.781513593386137
+      },
+      {
+        "id": "worker-4",
+        "kind": "worker",
+        "position": [
+          25.323497787351243,
+          15.224255699592439
+        ],
+        "goal": [
+          25.323497787351243,
+          10.775744300407561
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7612831787259103,
+        "release_time_s": 15.538269252322092
+      },
+      {
+        "id": "worker-5",
+        "kind": "worker",
+        "position": [
+          10.314731575309196,
+          14.965405459288629
+        ],
+        "goal": [
+          10.314731575309196,
+          11.034594540711371
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7512700369727776,
+        "release_time_s": 4.93584388768547
+      },
+      {
+        "id": "worker-6",
+        "kind": "worker",
+        "position": [
+          20.314502132679262,
+          14.70366077158744
+        ],
+        "goal": [
+          20.314502132679262,
+          11.29633922841256
+        ],
+        "radius": 0.3,
+        "max_speed": 0.94313693764782,
+        "release_time_s": 13.409971630775164
+      },
+      {
+        "id": "worker-7",
+        "kind": "worker",
+        "position": [
+          17.608056218566226,
+          10.766005960303602
+        ],
+        "goal": [
+          17.608056218566226,
+          15.233994039696398
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8145049324394501,
+        "release_time_s": 8.870044900646679
+      },
+      {
+        "id": "worker-8",
+        "kind": "worker",
+        "position": [
+          21.395169351337977,
+          10.748886787459831
+        ],
+        "goal": [
+          21.395169351337977,
+          15.251113212540169
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7427520219986407,
+        "release_time_s": 12.02054513155845
+      },
+      {
+        "id": "worker-9",
+        "kind": "worker",
+        "position": [
+          22.814884515002415,
+          10.652700192649352
+        ],
+        "goal": [
+          22.814884515002415,
+          15.347299807350648
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8504962039722505,
+        "release_time_s": 14.87166898713545
+      },
+      {
+        "id": "worker-10",
+        "kind": "worker",
+        "position": [
+          28.669114336730104,
+          10.671848828012998
+        ],
+        "goal": [
+          28.669114336730104,
+          15.328151171987002
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8860238807480745,
+        "release_time_s": 19.841624652928438
+      },
+      {
+        "id": "worker-11",
+        "kind": "worker",
+        "position": [
+          12.872752817756748,
+          11.23139016525165
+        ],
+        "goal": [
+          12.872752817756748,
+          14.76860983474835
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9218512846348084,
+        "release_time_s": 6.9790660697476525
+      },
+      {
+        "id": "worker-12",
+        "kind": "worker",
+        "position": [
+          12.220577632908329,
+          15.329285443613255
+        ],
+        "goal": [
+          12.220577632908329,
+          10.670714556386745
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9712991274431215,
+        "release_time_s": 5.896353752042896
+      },
+      {
+        "id": "worker-13",
+        "kind": "worker",
+        "position": [
+          25.154093837250326,
+          10.732081699820611
+        ],
+        "goal": [
+          25.154093837250326,
+          15.267918300179389
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9253812912551604,
+        "release_time_s": 16.03062177525009
+      },
+      {
+        "id": "worker-14",
+        "kind": "worker",
+        "position": [
+          13.970893924247093,
+          15.324096123418645
+        ],
+        "goal": [
+          13.970893924247093,
+          10.675903876581355
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7274660058475004,
+        "release_time_s": 5.598299095437257
+      },
+      {
+        "id": "worker-15",
+        "kind": "worker",
+        "position": [
+          10.182496658093587,
+          10.932347123907771
+        ],
+        "goal": [
+          10.182496658093587,
+          15.067652876092229
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8036185398251317,
+        "release_time_s": 2.746856674760015
+      }
+    ]
+  },
+  "scene_hash": "30f7d6c2e322b88f87f396fa1e5b251f4f6d769def02e7af8dac5a6047f618a0",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

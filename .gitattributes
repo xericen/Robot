@@ -2,4 +2,7 @@
 *.csv text eol=lf
 *.png binary
 *.ttf binary
+*.gz binary
 warehouse-collision-avoidance/fonts/OFL.txt -whitespace
+# Preserve archived measurements and provenance hashes byte for byte.
+warehouse-collision-avoidance/results/** -text -whitespace

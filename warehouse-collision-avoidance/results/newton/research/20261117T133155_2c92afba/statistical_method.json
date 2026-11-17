@@ -1,0 +1,11 @@
+{
+  "bootstrap": "3000 seed-cluster replicates; whole seeds resampled across six maps; paired scene hashes",
+  "independent_seed_clusters": 5,
+  "runs_per_algorithm": 30,
+  "turning": "planned-path heading changes",
+  "limitations": [
+    "single n=4: no density scaling conclusion",
+    "only Crossing: other scenarios N/A",
+    "five seeds: exploratory intervals"
+  ]
+}

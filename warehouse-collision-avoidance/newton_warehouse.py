@@ -11,6 +11,7 @@ import argparse
 import json
 import math
 import time
+from pathlib import Path
 
 import newton
 import numpy as np
@@ -23,6 +24,9 @@ from experiments.scenarios import SCENARIOS, Scenario, create_scenario
 from simulator.agents import Agent, ControlledRobot
 from warehouse_maps import shelf_geometry, get_map
 from newton_results import settings, save_result
+from encounter_scenarios import configure, scene_fingerprint
+from newton_safety import clearances, orca_audit
+from simulator.physics import swept_minimum_separation
 
 
 def make_viewer(name: str, frames: int, port: int):
@@ -77,6 +81,9 @@ def run(
     parameters: dict | None = None,
     persist: bool = True,
     quiet: bool = False,
+    encounter_mode: str = "baseline",
+    population_mode: str = "legacy",
+    capture_telemetry: bool = False,
 ) -> dict[str, object]:
     if not 0 <= agent_count <= 40:
         raise ValueError("Newton 웹 검증의 에이전트 수는 0~40 범위여야 합니다.")
@@ -85,11 +92,15 @@ def run(
     if not 0.2 <= robot_speed <= 2.0:
         raise ValueError("로봇 속도는 0.2~2.0m/s 범위여야 합니다.")
 
+    if encounter_mode != "baseline" or population_mode != "legacy":
+        common_traffic = False  # Controlled schedules replace the legacy corner patrols.
     wall_started = time.perf_counter()
     parameters = settings(parameters)
+    from experiment_archive import provenance
+    run_provenance = provenance(Path(__file__).resolve().parent) if persist else None
     wp.init()
     wp.set_device("cpu")
-    scenario = create_scenario(scenario_name, agent_count, seed, cooperative=False,
+    scenario = create_scenario("crowded" if population_mode != "legacy" else scenario_name, agent_count, seed, cooperative=False,
                                map_id=map_id, safety_distance=safety_distance)
     if traffic_mode not in ("static", "dynamic"):
         raise ValueError("정적/동적 실험 모드를 확인하세요.")
@@ -99,6 +110,9 @@ def run(
         for agent,p,g in zip(common_workers, traffic_config["workerSpawnPositions"], traffic_config["workerPatrolTargets"]):
             agent.position=np.asarray(p,dtype=float);agent.origin=agent.position.copy();agent.goal=np.asarray(g,dtype=float)
     record = getattr(bridge, "record", None)
+    encounter = (record.get("encounter", {"mode":"baseline","population":"legacy","barriers":[],"actors":[]})
+                 if record else configure(scenario, encounter_mode, population_mode, agent_count, seed,
+                                          safety_distance, robot_speed, planner, planner_seed))
     if record:
         # Recorded geometry and body types are authoritative for old scenes.
         first = record["frames"][0]["body_q"]
@@ -173,17 +187,22 @@ def run(
         shelf_poses = (shelf_geometry(scenario.map_config) if scenario.map_config else
                        [{"position":[x+w/2,y+d/2], "rotation":0, "size":[w,d],
                          "obstacle":[x,y,w,d]} for x,y,w,d in scenario.obstacles])
+    if not record:
+        shelf_poses = list(shelf_poses) + [{"position":[x+w/2,y+h/2],"rotation":0,"size":[w,h],
+                                          "obstacle":[x,y,w,h],"kind":"barrier"}
+                                         for x,y,w,h in encounter["barriers"]]
     for index, shelf in enumerate(shelf_poses):
         cx, cy = shelf["position"]
         width, height = shelf["size"]
         yaw = math.radians(shelf["rotation"])
+        collider_height = 1.2 if shelf.get("kind") == "barrier" else shelf_height
         static_shapes.append(
             builder.add_shape_box(
                 -1,
-                xform=wp.transform((cx, cy, shelf_height / 2), wp.quat_from_axis_angle(wp.vec3(0,0,1), yaw)),
+                xform=wp.transform((cx, cy, collider_height / 2), wp.quat_from_axis_angle(wp.vec3(0,0,1), yaw)),
                 hx=width / 2,
                 hy=height / 2,
-                hz=shelf_height / 2,
+                hz=collider_height / 2,
                 color=wp.vec3(0.34, 0.38, 0.42),
                 label=f"shelf_{index}",
             )
@@ -255,6 +274,11 @@ def run(
     computation_ms = 0.0
     algorithm_max_ms = 0.0
     algo_steps = 0
+    algorithm_samples_ms = []
+    telemetry = []
+    stop_time_s = stop_streak_s = longest_stop_s = 0.
+    operation_counts = dict(constraint_evaluations=0,lp_pair_evaluations=0,lp_iterations=0,candidate_velocity_checks=0)
+    constraint_violation_count = constraint_violation_frames = 0
     physics_ms = 0.0
     neighbor_checks = candidate_checks = constraints = 0
     collision_events = 0
@@ -267,8 +291,23 @@ def run(
     previous_robot = robot.position.copy()
     status = "timeout"
 
+    initial_state = {"start":scenario.start.tolist(),"goal":scenario.goal.tolist(),
+        "robot_radius":robot.radius,"robot_speed":robot_speed,"safety_distance":safety_distance,
+        "time_step_s":frame_dt,"map":map_id,"planner":planner,"planner_seed":planner_seed,
+        "obstacles":scenario.obstacles,"path":[p.tolist() for p in robot.path],
+        "actors":[{"id":a.identifier,"kind":a.kind,"position":a.position.tolist(),"goal":a.goal.tolist(),
+                   "radius":a.radius,"max_speed":a.max_speed,"velocity":[0.,0.],
+                   "release_time_s":getattr(a,"release_time_s",0.)} for a in scenario.agents]}
+    minimum_dynamic, minimum_static = clearances(robot, scenario.agents, scenario.width, scenario.height, scenario.obstacles)
+    static_safety_events = 0
+    static_risk_active = minimum_static < safety_distance
+    diagnostic_events = []
     metadata = {
+        "provenance": run_provenance,
         "parameters": parameters,
+        "capture_telemetry":capture_telemetry,"telemetry_schema":1,"stop_threshold_mps":.05,
+        "encounter_mode": encounter["mode"], "population_mode": population_mode,
+        "encounter": encounter, "initial_state": initial_state, "scene_hash": scene_fingerprint(initial_state),
         **planning, "traffic_mode":traffic_mode, "common_traffic":common_traffic,
         "engine": "NVIDIA Newton", "newton_version": newton.__version__,
         "warp_version": wp.__version__, "device": "cpu", "algorithm": algorithm.name,
@@ -332,6 +371,11 @@ def run(
                 agent.velocity = np.asarray(body_qd[agent_bodies[index]][:2], dtype=float)
                 agent.advance_patrol_goal()
 
+            before_robot = robot.position.tolist()
+            before_velocity = robot.velocity.tolist()
+            before_neighbors = [{"id":a.identifier,"kind":a.kind,"position":a.position.tolist(),
+                                 "velocity":a.velocity.tolist(),"radius":a.radius} for a in scenario.agents]
+
             preferred = robot.preferred_velocity()
             # Decelerate before arrival; completion requires actual physical rest.
             preferred_speed = float(np.linalg.norm(preferred))
@@ -343,13 +387,21 @@ def run(
                 robot, scenario.agents, preferred, safety_distance, frame_dt
             )
             algorithm_ms = (time.perf_counter_ns() - started) / 1_000_000
+            algorithm_samples_ms.append(algorithm_ms)
+            for key in operation_counts:
+                operation_counts[key] += getattr(diagnostics,key,0)
+            residuals = [float(d[0]*(p-target_velocity)[1]-d[1]*(p-target_velocity)[0])
+                         for p,d in getattr(algorithm,"last_lines",[])]
+            violated = sum(x>1e-7 for x in residuals)
+            constraint_violation_count += violated
+            constraint_violation_frames += int(violated>0)
             computation_ms += algorithm_ms
             algorithm_max_ms = max(algorithm_max_ms, algorithm_ms)
             algo_steps += 1
             neighbor_checks += diagnostics.neighbor_checks
             candidate_checks += diagnostics.candidate_checks
             constraints += diagnostics.constraints
-            agent_targets = [agent.preferred_velocity() if traffic_mode == "dynamic" else np.zeros(2) for agent in scenario.agents]
+            agent_targets = [agent.preferred_velocity() if traffic_mode == "dynamic" and sim_time >= getattr(agent,"release_time_s",0.) else np.zeros(2) for agent in scenario.agents]
 
             physics_started = time.perf_counter_ns()
             for _ in range(substeps):
@@ -405,19 +457,59 @@ def run(
             body_qd = state_0.body_qd.numpy()
             robot.position = np.asarray(body_q[robot_body][:2], dtype=float)
             robot.velocity = np.asarray(body_qd[robot_body][:2], dtype=float)
+            dynamic_clearance, static_clearance = clearances(robot, scenario.agents, scenario.width, scenario.height, scenario.obstacles)
+            # Agents still hold pre-frame positions; use actual post-frame poses for swept relative motion.
+            swept_clearances = [swept_minimum_separation(previous_robot, robot.position, agent.position,
+                                       np.asarray(body_q[body][:2])) - robot.radius - agent.radius
+                                for agent,body in zip(scenario.agents,agent_bodies)]
+            dynamic_clearance = min(swept_clearances, default=float("inf"))
+            minimum_dynamic = min(minimum_dynamic, dynamic_clearance)
+            minimum_static = min(minimum_static, static_clearance)
+            static_risk = static_clearance < safety_distance - 1e-6
+            static_safety_events += int(static_risk and not static_risk_active)
+            static_risk_active = static_risk
             path_length += float(np.linalg.norm(robot.position - previous_robot))
             previous_robot = robot.position.copy()
             current_safety = {
                 index
                 for index, body in enumerate(agent_bodies)
-                if float(np.linalg.norm(robot.position - np.asarray(body_q[body][:2])))
-                < robot.radius + scenario.agents[index].radius + safety_distance
+                if swept_clearances[index] < safety_distance
             }
             safety_events += len(current_safety - active_safety)
             active_safety = current_safety
+            if algorithm.name == "ORCA" and (active_safety or active_collisions or static_risk):
+                neighbors = [{"id":a.identifier,"position":body_q[b,:2].tolist(),
+                              "velocity":body_qd[b,:2].tolist(),"radius":a.radius}
+                             for a,b in zip(scenario.agents,agent_bodies)]
+                diagnostic_events.append(orca_audit(algorithm,before_robot,robot.position.tolist(),
+                    target_velocity,robot.velocity,neighbors,frame,sim_time,
+                    sorted(active_collisions),sorted(active_safety)))
+                diagnostic_events[-1].update(preferred_velocity=preferred.tolist(),robot_velocity_before=before_velocity,
+                                             neighbors_before=before_neighbors,static_clearance_m=static_clearance)
 
             arrived = (float(np.linalg.norm(robot.goal - robot.position)) <= .25
                        and float(np.linalg.norm(robot.velocity)) <= .02)
+            stopped = np.linalg.norm(robot.velocity)<.05 and np.linalg.norm(robot.goal-robot.position)>.25
+            stop_time_s += frame_dt if stopped else 0.
+            stop_streak_s = stop_streak_s+frame_dt if stopped else 0.
+            longest_stop_s = max(longest_stop_s,stop_streak_s)
+            if capture_telemetry:
+                telemetry.append({"frame":frame,"t":sim_time,"t_before":max(0.,sim_time-frame_dt),
+                    "robot_before":before_robot,"robot_velocity_before":before_velocity,
+                    "robot":robot.position.tolist(),"velocity":robot.velocity.tolist(),
+                    "preferred_velocity":preferred.tolist(),"target_velocity":target_velocity.tolist(),
+                    "neighbors_before":before_neighbors,
+                    "neighbors_after":[{"id":a.identifier,"kind":a.kind,"radius":a.radius,
+                        "position":body_q[b,:2].tolist(),"velocity":body_qd[b,:2].tolist()} for a,b in zip(scenario.agents,agent_bodies)],
+                    "collisions":collision_events,"contact_labels":[model.shape_label[i] for i in sorted(active_collisions)],
+                    "safety_violations":safety_events,"static_safety_violations":static_safety_events,
+                    "min_dynamic_clearance_m":dynamic_clearance if np.isfinite(dynamic_clearance) else None,
+                    "static_clearance_m":static_clearance,"algorithm_ms":algorithm_ms,
+                    "constraint_evaluations":getattr(diagnostics,"constraint_evaluations",0),
+                    "lp_pair_evaluations":getattr(diagnostics,"lp_pair_evaluations",0),
+                    "lp_iterations":getattr(diagnostics,"lp_iterations",0),
+                    "halfplanes":[{"point":p.tolist(),"direction":d.tolist()} for p,d in getattr(algorithm,"last_lines",[])],
+                    "constraint_violation_count":violated})
             viewer.begin_frame(sim_time)
             viewer.log_state(state_0)
             if visuals:
@@ -463,12 +555,26 @@ def run(
         "goal": [round(float(v), 4) for v in robot.goal],
         "collisions": collision_events,
         "safety_violations": safety_events,
+        "static_safety_violations": static_safety_events,
+        "collision_free_success": int(status == "success" and collision_events == 0),
+        "safe_success": int(status == "success" and collision_events == 0 and safety_events == 0 and static_safety_events == 0
+                            and minimum_dynamic >= safety_distance-1e-6 and minimum_static >= safety_distance-1e-6),
+        "min_dynamic_clearance_m": minimum_dynamic if np.isfinite(minimum_dynamic) else None,
+        "min_static_clearance_m": minimum_static,
+        "min_separation_m": min(minimum_dynamic, minimum_static),
+        "diagnostic_events": diagnostic_events,
         "physics_runtime_ms": round(physics_ms, 4),
         "algorithm_runtime_ms": round(computation_ms, 4),
         "wall_time_s": time.perf_counter() - wall_started,
         "algo_time_avg_ms": computation_ms / max(1, algo_steps),
         "algo_time_max_ms": algorithm_max_ms,
         "algo_steps": algo_steps,
+        "algo_time_median_ms": float(np.median(algorithm_samples_ms)),
+        "algo_time_p95_ms": float(np.percentile(algorithm_samples_ms,95)),
+        "robot_stop_time_s": stop_time_s, "longest_stop_s":longest_stop_s,
+        "constraint_violation_count":constraint_violation_count,"constraint_violation_frames":constraint_violation_frames,
+        **operation_counts,
+        "algorithm_samples_ms":algorithm_samples_ms,"telemetry":telemetry,
         "algorithm_ms_per_frame": round(computation_ms / max(1, frame + 1), 6),
         "neighbor_checks": neighbor_checks,
         "candidate_checks": candidate_checks,
@@ -503,8 +609,10 @@ def main() -> int:
     parser.add_argument("--planner-seed", type=int, default=42)
     parser.add_argument("--common-traffic", action="store_true", help="Use map-configured common patrol spawns")
     parser.add_argument("--parameters", default="{}", help="회피 파라미터 JSON")
+    parser.add_argument("--encounter", dest="encounter_mode", choices=("baseline","head_on","crossing","narrow_passing"), default="baseline")
+    parser.add_argument("--population", dest="population_mode", choices=("legacy","workers","mixed"), default="legacy")
     args = parser.parse_args()
-    run(args.algorithm, args.agents, args.seed, args.safety, args.speed, args.scenario, args.frames, args.viewer, args.port, map_id=args.map_id, planner=args.planner, traffic_mode=args.traffic_mode, planner_seed=args.planner_seed, common_traffic=args.common_traffic, parameters=json.loads(args.parameters))
+    run(args.algorithm, args.agents, args.seed, args.safety, args.speed, args.scenario, args.frames, args.viewer, args.port, map_id=args.map_id, planner=args.planner, traffic_mode=args.traffic_mode, planner_seed=args.planner_seed, common_traffic=args.common_traffic, parameters=json.loads(args.parameters), encounter_mode=args.encounter_mode, population_mode=args.population_mode)
     return 0
 
 

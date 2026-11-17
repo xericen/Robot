@@ -13,6 +13,10 @@ class AlgorithmDiagnostics:
     neighbor_checks: int = 0
     candidate_checks: int = 0
     constraints: int = 0
+    constraint_evaluations: int = 0
+    lp_pair_evaluations: int = 0
+    lp_iterations: int = 0
+    candidate_velocity_checks: int = 0
 
 
 class AvoidanceAlgorithm(ABC):

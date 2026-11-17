@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "single_live_viewer": true,
+  "render_fps": 10,
+  "hidden_3d_unmounted": true,
+  "compact_metadata_not_repeated": true,
+  "status_does_not_write_commands": true,
+  "reset_revision_refreshed": true,
+  "page_errors": []
+}

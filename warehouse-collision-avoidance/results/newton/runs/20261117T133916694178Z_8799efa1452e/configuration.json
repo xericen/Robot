@@ -1,0 +1,384 @@
+{
+  "mapId": "map2",
+  "scenario": "medium",
+  "algorithm": "ORCA",
+  "seed": 43,
+  "agent_count": 4,
+  "worker_count": 4,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "workers",
+  "encounter": {
+    "mode": "crossing",
+    "population": "workers",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          14.624256636540919,
+          17.333684742772764
+        ],
+        "goal": [
+          14.624256636540919,
+          12.666315257227234
+        ],
+        "radius": 0.3,
+        "max_speed": 0.804182016502083,
+        "release_time_s": 8.389216209375133
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          23.239455066011786,
+          16.730289690884423
+        ],
+        "goal": [
+          23.239455066011786,
+          13.269710309115577
+        ],
+        "radius": 0.3,
+        "max_speed": 0.797100413775002,
+        "release_time_s": 16.535686851401667
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          23.007957466117446,
+          12.967508167962034
+        ],
+        "goal": [
+          23.007957466117446,
+          17.032491832037966
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7515948157209285,
+        "release_time_s": 15.049619255058026
+      },
+      {
+        "id": "worker-3",
+        "kind": "worker",
+        "position": [
+          14.541499254377339,
+          12.918553554453457
+        ],
+        "goal": [
+          14.541499254377339,
+          17.081446445546543
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9490138109926921,
+        "release_time_s": 7.4659835495897795
+      }
+    ]
+  },
+  "scene_hash": "50e5fda20a7845252781ca0be5819037d09fd7e56243c71c89dc4349a26e1ed2",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu",
+  "width": 38.0,
+  "height": 26.0,
+  "map_config": {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map2",
+    "mapName": "Map 2: Horizontal",
+    "description": "가로 선반을 엇갈리게 배치하고 중앙 선반의 위·아래 우회 통로 확보",
+    "shelfPositions": [
+      [
+        9,
+        8.5
+      ],
+      [
+        9,
+        16.5
+      ],
+      [
+        19,
+        12.5
+      ],
+      [
+        19,
+        20
+      ],
+      [
+        29,
+        8.5
+      ],
+      [
+        29,
+        16.5
+      ]
+    ],
+    "shelfRotations": [
+      90,
+      90,
+      90,
+      90,
+      90,
+      90
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        35.0,
+        3.0
+      ],
+      [
+        3.0,
+        23.0
+      ],
+      [
+        35.0,
+        23.0
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        35.0,
+        23.0
+      ],
+      [
+        7.0,
+        23.0
+      ],
+      [
+        31.0,
+        23.0
+      ]
+    ],
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction"
+  },
+  "shelf_poses": [
+    {
+      "position": [
+        9,
+        8.5
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        5.5,
+        7.0,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        5.5,
+        7.0,
+        7.0,
+        3.0000000000000004
+      ]
+    },
+    {
+      "position": [
+        9,
+        16.5
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        5.5,
+        15.0,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        5.5,
+        15.0,
+        7.0,
+        3.0000000000000004
+      ]
+    },
+    {
+      "position": [
+        19,
+        12.5
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        15.5,
+        11.0,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        15.5,
+        11.0,
+        7.0,
+        3.0000000000000004
+      ]
+    },
+    {
+      "position": [
+        19,
+        20
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        15.5,
+        18.5,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        15.5,
+        18.5,
+        7.0,
+        3.0000000000000004
+      ]
+    },
+    {
+      "position": [
+        29,
+        8.5
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        25.5,
+        7.0,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        25.5,
+        7.0,
+        7.0,
+        3.0000000000000004
+      ]
+    },
+    {
+      "position": [
+        29,
+        16.5
+      ],
+      "rotation": 90,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        25.5,
+        15.0,
+        7.0,
+        3.0000000000000004
+      ],
+      "bounds": [
+        25.5,
+        15.0,
+        7.0,
+        3.0000000000000004
+      ]
+    }
+  ],
+  "bodies": [
+    {
+      "id": "R0",
+      "kind": "robot",
+      "body": 0,
+      "radius": 0.42,
+      "collider_half_height": 0.26,
+      "cooperative": true,
+      "mass_kg": 13.999999046325684
+    },
+    {
+      "id": "worker-0",
+      "kind": "worker",
+      "body": 1,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "worker-1",
+      "kind": "worker",
+      "body": 2,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "worker-2",
+      "kind": "worker",
+      "body": 3,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "worker-3",
+      "kind": "worker",
+      "body": 4,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    }
+  ],
+  "capture_telemetry": false,
+  "telemetry_schema": 1,
+  "stop_threshold_mps": 0.05,
+  "research_scenario_label": null
+}

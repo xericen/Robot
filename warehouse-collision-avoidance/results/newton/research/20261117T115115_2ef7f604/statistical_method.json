@@ -1,0 +1,14 @@
+{
+  "main240": [
+    "per-frame median/P95 runtime",
+    "stop time",
+    "LP inner evaluations",
+    "preferred velocity",
+    "reaction/deceleration onset"
+  ],
+  "handling": "N/A; no reconstruction from two trajectory samples or mean/max",
+  "denominators": "80 runs per algorithm; 10 seed clusters, n2 cohorts share physical scenes",
+  "bootstrap": "3000 replicates, resample entire seeds across configurations, paired A-B; fixed RNG20261117",
+  "n_policy": "retain measured 2,4,8,16; n12 omitted to reuse original study; no invented samples",
+  "extra_runs": "supplemental telemetry kept separate from historical performance tables"
+}

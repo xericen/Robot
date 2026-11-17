@@ -1,0 +1,7 @@
+{
+  "runs": 30,
+  "frames": 5400,
+  "seed": 42,
+  "reason": "frame runtime distribution, LP inner counters, stop and reaction telemetry missing historically",
+  "not_pooled_with_240": true
+}

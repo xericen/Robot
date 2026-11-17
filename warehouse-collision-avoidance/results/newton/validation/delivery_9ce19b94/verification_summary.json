@@ -1,0 +1,11 @@
+{
+  "pytest_passed": 57,
+  "pytest_failed": 0,
+  "node_ui_checks": 4,
+  "single_live_browser": true,
+  "new_three_session_browser_performance": "not run; existing three user sessions occupy viewer slots",
+  "original_files_unchanged": 2423,
+  "physics_step_unchanged": true,
+  "path_display_limit": 256,
+  "web_render_fps": 10
+}

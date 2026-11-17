@@ -1,0 +1,636 @@
+{
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "encounter_mode": "crossing",
+  "population_mode": "mixed",
+  "encounter": {
+    "mode": "crossing",
+    "population": "mixed",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          14.458962489047204,
+          14.88634869810971
+        ],
+        "goal": [
+          14.458962489047204,
+          11.11365130189029
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7539053485902059,
+        "release_time_s": 7.171127201952696
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          19.153554825513037,
+          10.83730037643208
+        ],
+        "goal": [
+          19.153554825513037,
+          15.16269962356792
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7257908387260699,
+        "release_time_s": 11.764830735158103
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          23.96770675886973,
+          10.936522738087799
+        ],
+        "goal": [
+          23.96770675886973,
+          15.063477261912201
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8742073320114155,
+        "release_time_s": 14.9081048095013
+      },
+      {
+        "id": "robot-0",
+        "kind": "robot",
+        "position": [
+          19.666772406604846,
+          14.707182347027663
+        ],
+        "goal": [
+          19.666772406604846,
+          11.292817652972337
+        ],
+        "radius": 0.42,
+        "max_speed": 1.0750594288321138,
+        "release_time_s": 11.788212864969775
+      }
+    ]
+  },
+  "initial_state": {
+    "start": [
+      2.5,
+      13.0
+    ],
+    "goal": [
+      35.5,
+      13.0
+    ],
+    "robot_radius": 0.42,
+    "robot_speed": 1.2,
+    "safety_distance": 0.35,
+    "time_step_s": 0.03333333333333333,
+    "map": "map1",
+    "planner": "astar",
+    "planner_seed": 42,
+    "obstacles": [
+      [
+        8.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      [
+        8.0,
+        16.0,
+        3.0,
+        7.0
+      ],
+      [
+        16.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      [
+        16.0,
+        16.0,
+        3.0,
+        7.0
+      ],
+      [
+        24.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      [
+        24.0,
+        16.0,
+        3.0,
+        7.0
+      ]
+    ],
+    "path": [
+      [
+        2.5,
+        13.0
+      ],
+      [
+        35.5,
+        13.0
+      ]
+    ],
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          14.458962489047204,
+          14.88634869810971
+        ],
+        "goal": [
+          14.458962489047204,
+          11.11365130189029
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7539053485902059,
+        "velocity": [
+          0.0,
+          0.0
+        ],
+        "release_time_s": 7.171127201952696
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          19.153554825513037,
+          10.83730037643208
+        ],
+        "goal": [
+          19.153554825513037,
+          15.16269962356792
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7257908387260699,
+        "velocity": [
+          0.0,
+          0.0
+        ],
+        "release_time_s": 11.764830735158103
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          23.96770675886973,
+          10.936522738087799
+        ],
+        "goal": [
+          23.96770675886973,
+          15.063477261912201
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8742073320114155,
+        "velocity": [
+          0.0,
+          0.0
+        ],
+        "release_time_s": 14.9081048095013
+      },
+      {
+        "id": "robot-0",
+        "kind": "robot",
+        "position": [
+          19.666772406604846,
+          14.707182347027663
+        ],
+        "goal": [
+          19.666772406604846,
+          11.292817652972337
+        ],
+        "radius": 0.42,
+        "max_speed": 1.0750594288321138,
+        "velocity": [
+          0.0,
+          0.0
+        ],
+        "release_time_s": 11.788212864969775
+      }
+    ]
+  },
+  "scene_hash": "33ce3aede480be9b561b37803d9dcf76a9889cf06740b0949232789cd2d79a2b",
+  "expanded_nodes": 67,
+  "iterations": null,
+  "planner": "astar",
+  "planning_time_ms": 48.4129,
+  "planned_path_length_m": 33.0,
+  "turning_count": 0,
+  "replanning_count": 0,
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "engine": "NVIDIA Newton",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu",
+  "algorithm": "Naive",
+  "scenario": "crowded",
+  "agent_count": 4,
+  "seed": 48,
+  "worker_count": 3,
+  "other_robot_count": 1,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "width": 38.0,
+  "height": 26.0,
+  "shelves": [
+    [
+      8.0,
+      3.0,
+      3.0,
+      7.0
+    ],
+    [
+      8.0,
+      16.0,
+      3.0,
+      7.0
+    ],
+    [
+      16.0,
+      3.0,
+      3.0,
+      7.0
+    ],
+    [
+      16.0,
+      16.0,
+      3.0,
+      7.0
+    ],
+    [
+      24.0,
+      3.0,
+      3.0,
+      7.0
+    ],
+    [
+      24.0,
+      16.0,
+      3.0,
+      7.0
+    ]
+  ],
+  "shelf_poses": [
+    {
+      "position": [
+        9.5,
+        6.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        8.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        8.0,
+        3.0,
+        3.0,
+        7.0
+      ]
+    },
+    {
+      "position": [
+        9.5,
+        19.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        8.0,
+        16.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        8.0,
+        16.0,
+        3.0,
+        7.0
+      ]
+    },
+    {
+      "position": [
+        17.5,
+        6.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        16.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        16.0,
+        3.0,
+        3.0,
+        7.0
+      ]
+    },
+    {
+      "position": [
+        17.5,
+        19.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        16.0,
+        16.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        16.0,
+        16.0,
+        3.0,
+        7.0
+      ]
+    },
+    {
+      "position": [
+        25.5,
+        6.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        24.0,
+        3.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        24.0,
+        3.0,
+        3.0,
+        7.0
+      ]
+    },
+    {
+      "position": [
+        25.5,
+        19.5
+      ],
+      "rotation": 0,
+      "size": [
+        3,
+        7
+      ],
+      "obstacle": [
+        24.0,
+        16.0,
+        3.0,
+        7.0
+      ],
+      "bounds": [
+        24.0,
+        16.0,
+        3.0,
+        7.0
+      ]
+    }
+  ],
+  "mapId": "map1",
+  "mapName": "Map 1: Standard",
+  "mapDescription": "기존 상·하단 각 3개 선반과 6m 중앙 직선 통로",
+  "map_config": {
+    "warehouseSize": [
+      38,
+      26
+    ],
+    "shelfSize": [
+      3,
+      7
+    ],
+    "shelfHeight": 3.2,
+    "mapId": "map1",
+    "mapName": "Map 1: Standard",
+    "description": "기존 상·하단 각 3개 선반과 6m 중앙 직선 통로",
+    "shelfPositions": [
+      [
+        9.5,
+        6.5
+      ],
+      [
+        9.5,
+        19.5
+      ],
+      [
+        17.5,
+        6.5
+      ],
+      [
+        17.5,
+        19.5
+      ],
+      [
+        25.5,
+        6.5
+      ],
+      [
+        25.5,
+        19.5
+      ]
+    ],
+    "shelfRotations": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "startPosition": [
+      2.5,
+      13
+    ],
+    "goalPosition": [
+      35.5,
+      13
+    ],
+    "workerSpawnPositions": [
+      [
+        13.5,
+        6.3999999999999995
+      ],
+      [
+        14.999999999999998,
+        24.800000000000004
+      ],
+      [
+        27.999999999999996,
+        1.5
+      ]
+    ],
+    "workerPatrolTargets": [
+      [
+        13.5,
+        19.6
+      ],
+      [
+        14.999999999999998,
+        21.300000000000004
+      ],
+      [
+        27.999999999999996,
+        5.0
+      ]
+    ],
+    "aislePaint": {
+      "centreY": 13,
+      "width": 5.8
+    },
+    "robotSpawnPosition": [
+      2.5,
+      13
+    ],
+    "layoutOrigin": "Custom six-rack test layout; research-inspired, not a paper reproduction",
+    "baselineTrafficPreserved": true
+  },
+  "layout_version": 2,
+  "protected_radius_m": 3.0,
+  "shelf_height_m": 3.2,
+  "wall_height_m": 1.6,
+  "crossing_worker_count": 3,
+  "requested_frame_limit": 5400,
+  "frame_limit": 5400,
+  "frame_budget_extended": false,
+  "start": [
+    2.5,
+    13.0
+  ],
+  "goal": [
+    35.5,
+    13.0
+  ],
+  "astar_path": [
+    [
+      2.5,
+      13.0
+    ],
+    [
+      35.5,
+      13.0
+    ]
+  ],
+  "bodies": [
+    {
+      "id": "R0",
+      "kind": "robot",
+      "body": 0,
+      "radius": 0.42,
+      "collider_half_height": 0.26,
+      "cooperative": true,
+      "mass_kg": 13.999999046325684
+    },
+    {
+      "id": "worker-0",
+      "kind": "worker",
+      "body": 1,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "worker-1",
+      "kind": "worker",
+      "body": 2,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "worker-2",
+      "kind": "worker",
+      "body": 3,
+      "radius": 0.3,
+      "collider_half_height": 0.55,
+      "cooperative": false,
+      "mass_kg": 70.00000762939453
+    },
+    {
+      "id": "robot-0",
+      "kind": "robot",
+      "body": 4,
+      "radius": 0.42,
+      "collider_half_height": 0.26,
+      "cooperative": false,
+      "mass_kg": 11.999999046325684
+    }
+  ],
+  "viewer": "null",
+  "status": "success",
+  "termination_reason": "goal_reached",
+  "goal_distance_m": 0.026110076023716303,
+  "sim_time_s": 36.433,
+  "path_length_m": 34.835789981175424,
+  "final_position": [
+    35.4747,
+    12.9936
+  ],
+  "final_velocity": [
+    0.018,
+    0.0043
+  ],
+  "collisions": 1,
+  "safety_violations": 1,
+  "static_safety_violations": 1,
+  "collision_free_success": 0,
+  "safe_success": 0,
+  "min_dynamic_clearance_m": 0.3463035116821425,
+  "min_static_clearance_m": 0.1677494812011719,
+  "min_separation_m": 0.1677494812011719,
+  "physics_runtime_ms": 7969.7276,
+  "algorithm_runtime_ms": 25.7507,
+  "wall_time_s": 9.316028719069436,
+  "algo_time_avg_ms": 0.023559655077767576,
+  "algo_time_max_ms": 0.086619,
+  "algo_steps": 1093,
+  "algorithm_ms_per_frame": 0.02356,
+  "neighbor_checks": 4372,
+  "candidate_checks": 0,
+  "constraints": 0,
+  "contact_labels": [
+    "ground",
+    "shelf_4"
+  ],
+  "run_id": "20261117T101357535223Z_8579dd6d9415"
+}

@@ -1,0 +1,102 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "VO",
+  "seed": 43,
+  "agent_count": 4,
+  "worker_count": 4,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 2400,
+  "requested_frame_limit": 2400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "head_on",
+  "population_mode": "workers",
+  "encounter": {
+    "mode": "head_on",
+    "population": "workers",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          16.592343381766064,
+          13.0
+        ],
+        "goal": [
+          12.708643455442095,
+          13.0
+        ],
+        "radius": 0.3,
+        "max_speed": 0.804182016502083,
+        "release_time_s": 7.195926622594704
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          18.186762316045694,
+          15.039506599192134
+        ],
+        "goal": [
+          18.186762316045694,
+          10.960493400807866
+        ],
+        "radius": 0.3,
+        "max_speed": 0.797100413775002,
+        "release_time_s": 10.348664030114984
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          24.219816137379443,
+          10.60863290421738
+        ],
+        "goal": [
+          24.219816137379443,
+          15.39136709578262
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7515948157209285,
+        "release_time_s": 15.16701972539238
+      },
+      {
+        "id": "worker-3",
+        "kind": "worker",
+        "position": [
+          9.871091002427903,
+          11.280587593500725
+        ],
+        "goal": [
+          9.871091002427903,
+          14.719412406499275
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9490138109926921,
+        "release_time_s": 4.731917990732372
+      }
+    ]
+  },
+  "scene_hash": "5ecf4f8ac2e6f93e35929f649bd21aaa27f19a5e56484fab7fe93ab3fb091971",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

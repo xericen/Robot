@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "batch_id": "20261117T133155_2c92afba",
+  "measured_runs": 90,
+  "scene_matched_triplets": 30,
+  "dashboard_numeric_csv_match": true,
+  "input_files_verified": 540,
+  "independent_seed_clusters": 5,
+  "layout_count": 6,
+  "figures": 19
+}

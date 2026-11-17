@@ -1,0 +1,59 @@
+{
+  "review_id": "ssblbvzaiguanzwntrpqgkbxmiyweitr",
+  "date": "2026-11-17",
+  "study_runs": 240,
+  "paired_conditions": 80,
+  "scene_hashes_match": true,
+  "unique_run_ids": 240,
+  "repeats_per_condition": 10,
+  "counts": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "success": 227,
+  "collision_free_success": 152,
+  "safe_success": 53,
+  "pilot_runs": 18,
+  "reproducibility": {
+    "runs": 18,
+    "pairs": 9,
+    "frames": 600,
+    "all_equal": true
+  },
+  "pytest": {
+    "full_passed": 142,
+    "warnings": 70,
+    "follow_up_traffic_passed": 28,
+    "follow_up_archive_api_passed": 2
+  },
+  "graphs": {
+    "main": 18,
+    "pilot": 27,
+    "dpi": 200
+  },
+  "browser": {
+    "passed": true,
+    "main_rows": 24,
+    "main_graphs": 18,
+    "history_preserved": true,
+    "narrow_scene_2d3d": true,
+    "live_switch": true,
+    "invalid_file_rejected": true
+  },
+  "pygame_csv_and_figures_unchanged": true,
+  "wiz_build": "passed"
+}

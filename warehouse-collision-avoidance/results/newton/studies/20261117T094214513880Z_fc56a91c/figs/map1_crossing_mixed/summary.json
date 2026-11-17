@@ -1,0 +1,770 @@
+[
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 33.6832,
+    "std": 1.3948521068557744
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 9,
+    "mean": 35.27044444444445,
+    "std": 2.25351592578748
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 8,
+    "mean": 39.86675,
+    "std": 7.129769696741364
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 6,
+    "mean": 44.65,
+    "std": 9.116371602781449
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 31.6633,
+    "std": 1.5180518253486754
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 36.2868,
+    "std": 4.994745790439301
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 36.35680000000001,
+    "std": 6.1727653950415275
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 44.4433,
+    "std": 13.677813641482002
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 31.126799999999996,
+    "std": 0.3955768783266614
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 32.5067,
+    "std": 1.527982478811702
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 36.7934,
+    "std": 6.733852095527821
+  },
+  {
+    "metric": "arrival_time_s",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 8,
+    "mean": 48.025,
+    "std": 13.267183768338219
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 34.08329018800028,
+    "std": 0.8542930495178802
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 34.771437557791344,
+    "std": 1.8304031194749324
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 35.570011130592476,
+    "std": 2.1149959578405877
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 35.464653300729324,
+    "std": 2.521851156384893
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 33.26329441243995,
+    "std": 0.14477273821794095
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 33.78349939774362,
+    "std": 0.6578175904381686
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 34.239672321857476,
+    "std": 0.9487886298321243
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 36.0320761088487,
+    "std": 2.1202869039587426
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 33.48624379257451,
+    "std": 0.24811336919209367
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 33.84336139108328,
+    "std": 0.5992546502843221
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 34.28934564751107,
+    "std": 0.7303359471999437
+  },
+  {
+    "metric": "path_length_m",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 37.31272794262698,
+    "std": 5.443342460469948
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 2.8,
+    "std": 4.211096452627668
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 7.5,
+    "std": 6.851601597031489
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 8.3,
+    "std": 4.945255863507525
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 8.8,
+    "std": 5.921711464320654
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.1,
+    "std": 0.31622776601683794
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 2.1,
+    "std": 2.766867462592951
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 2.3,
+    "std": 2.4517567397911058
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 5.5,
+    "std": 5.060742150229659
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 1.5,
+    "std": 0.8498365855987975
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 2.5,
+    "std": 1.8408935028645435
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 5.3,
+    "std": 3.3349995835415367
+  },
+  {
+    "metric": "risk_events",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 7.1,
+    "std": 2.923088169119167
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 90.0,
+    "std": 31.622776601683793
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 80.0,
+    "std": 42.16370213557839
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 60.0,
+    "std": 51.63977794943222
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 80.0,
+    "std": 42.1637021355784
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.01997350951181835,
+    "std": 0.001350465944486389
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 0.025833514534799096,
+    "std": 0.0029430525256144116
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.03492466115307272,
+    "std": 0.0025025738053358173
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 0.05724306216050686,
+    "std": 0.006485655387545961
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 1.1296540736156764,
+    "std": 0.09159616099150684
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 1.6526512871633652,
+    "std": 0.25472618505521727
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 2.3927708940131422,
+    "std": 0.20409954013402118
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 4.299050556598174,
+    "std": 0.787423572733517
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.04904670917640075,
+    "std": 0.004343405051185406
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 0.08051769791395183,
+    "std": 0.006571374846303292
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.12122625789588903,
+    "std": 0.003141725684910626
+  },
+  {
+    "metric": "algo_time_avg_ms",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 0.23444213967405264,
+    "std": 0.021523879600853224
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 40.0,
+    "std": 51.63977794943222
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 20.0,
+    "std": 42.16370213557839
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 90.0,
+    "std": 31.622776601683793
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 40.0,
+    "std": 51.63977794943222
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 30.0,
+    "std": 48.3045891539648
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 10.0,
+    "std": 31.622776601683793
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 10.0,
+    "std": 31.622776601683793
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  {
+    "metric": "safe_success_pct",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 0.0,
+    "std": 0.0
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 90.0,
+    "std": 31.622776601683796
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 60.0,
+    "std": 51.63977794943222
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 30.0,
+    "std": 48.30458915396479
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 30.0,
+    "std": 48.3045891539648
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 100.0,
+    "std": 0.0
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 60.0,
+    "std": 51.63977794943222
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 50.0,
+    "std": 52.70462766947299
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 30.0,
+    "std": 48.3045891539648
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 90.0,
+    "std": 31.622776601683793
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 70.0,
+    "std": 48.3045891539648
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 50.0,
+    "std": 52.70462766947299
+  },
+  {
+    "metric": "collision_free_pct",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": 20.0,
+    "std": 42.16370213557839
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "Naive",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.34506542260790324,
+    "std": 0.2013175186473843
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "Naive",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 0.18568155148237278,
+    "std": 0.2764144196677749
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "Naive",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": -0.004532051409155307,
+    "std": 0.006873636552819523
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "Naive",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": -0.00520002472755654,
+    "std": 0.007063327016477869
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "VO",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.33232657755197204,
+    "std": 0.12252698373850955
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "VO",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 0.13962877022266712,
+    "std": 0.20047131960307654
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "VO",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.10016481045978728,
+    "std": 0.17825160425155157
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "VO",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": -0.003328606379259086,
+    "std": 0.017418259007152263
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "ORCA",
+    "agent_count": 2,
+    "runs": 10,
+    "mean": 0.3171936113680523,
+    "std": 0.09208040637313022
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "ORCA",
+    "agent_count": 4,
+    "runs": 10,
+    "mean": 0.2569727137450088,
+    "std": 0.1495888888512507
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "ORCA",
+    "agent_count": 8,
+    "runs": 10,
+    "mean": 0.1294349391083777,
+    "std": 0.1829169016286891
+  },
+  {
+    "metric": "min_separation_m",
+    "algorithm": "ORCA",
+    "agent_count": 16,
+    "runs": 10,
+    "mean": -0.0029992533238489215,
+    "std": 0.018494356648014482
+  }
+]

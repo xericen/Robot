@@ -1,0 +1,10 @@
+{
+  "scope": "Same recorded physics frame, status-envelope serialization only; not an end-to-end FPS benchmark",
+  "before_bytes": 71134,
+  "after_bytes": 2120,
+  "reduction_pct": 97.01970928107515,
+  "before_publish_mean_ms": 2.3931124503724277,
+  "after_publish_mean_ms": 0.20121272886171937,
+  "original_frame_count": 5401,
+  "physics_samples_dropped": 0
+}

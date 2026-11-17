@@ -1,0 +1,11 @@
+{
+  "pytest_passed": 63,
+  "pytest_failed": 0,
+  "node_ui_checks": 4,
+  "browser_maps": 6,
+  "live_3d_sessions": 18,
+  "delayed_map2_vo_seconds": 2,
+  "max_physics_lead_frames": 6,
+  "original_files_verified": 2423,
+  "complete_goal_experiments_rerun": false
+}

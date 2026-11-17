@@ -25,7 +25,7 @@ try:
         html = html.replace("<head>", "<head><script>" + shim + "</script>", 1)
         response = flask.Response(html, content_type="text/html; charset=utf-8")
     else:
-        if parts[1] != "bridge" or len(parts) not in (3, 4) or parts[2] not in ("open", "poll", "send", "close"):
+        if parts[1] != "bridge" or len(parts) not in (3, 4) or parts[2] not in ("open", "poll", "send", "close", "present"):
             raise ValueError("invalid transport path")
         if len(parts) == 4 and not re.fullmatch(r"[a-f0-9]{32}", parts[3]):
             raise ValueError("invalid connection")
@@ -34,9 +34,11 @@ try:
         if flask.request.content_length and flask.request.content_length > 2 * 1024 * 1024:
             wiz.response.abort(413)
         target = "http://127.0.0.1:" + str(int(status["transport_port"])) + "/" + "/".join(parts[2:])
-        request = urllib.request.Request(target, data=flask.request.get_data(), method="POST")
+        request = urllib.request.Request(target, data=flask.request.get_data(), method="POST",
+            headers={k:flask.request.headers.get(k,"") for k in ("X-Warehouse-Binary","X-Warehouse-Batch")})
         with urllib.request.urlopen(request, timeout=5) as upstream:
-            response = flask.Response(upstream.read(), content_type="application/json")
+            response = flask.Response(upstream.read(), content_type=upstream.headers.get("Content-Type","application/json"))
+            response.headers["X-Warehouse-Closed"]=upstream.headers.get("X-Warehouse-Closed","0")
 except (OSError, ValueError, KeyError):
     wiz.response.abort(503)
 response.headers["Cache-Control"] = "no-store"

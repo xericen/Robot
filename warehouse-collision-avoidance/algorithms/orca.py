@@ -26,6 +26,8 @@ class ORCAAvoidance(AvoidanceAlgorithm):
                         safety_distance: float, dt: float) -> tuple[np.ndarray, AlgorithmDiagnostics]:
         diagnostics = AlgorithmDiagnostics()
         lines: list[tuple[np.ndarray, np.ndarray]] = []
+        self.last_lines = lines
+        self.infeasible = False
         # Unlimited defaults preserve the original iteration order and behavior.
         if self.neighbor_dist > 0:
             neighbors = [a for a in neighbors if np.linalg.norm(a.position - robot.position) <= self.neighbor_dist]
@@ -75,17 +77,20 @@ class ORCAAvoidance(AvoidanceAlgorithm):
         result = self.limit_speed(preferred.copy(), robot.max_speed)
         for index, (point, direction) in enumerate(lines):
             diagnostics.candidate_checks += 1
+            diagnostics.constraint_evaluations += 1
             if det(direction, point - result) <= 1e-9:
                 continue
-            projected = self._project_line(lines, index, preferred, robot.max_speed)
+            diagnostics.lp_iterations += 1
+            projected = self._project_line(lines, index, preferred, robot.max_speed, diagnostics)
             if projected is None:
+                self.infeasible = True
                 return np.zeros(2, dtype=float), diagnostics
             result = projected
         return result, diagnostics
 
     @staticmethod
     def _project_line(lines: list[tuple[np.ndarray, np.ndarray]], line_index: int,
-                      preferred: np.ndarray, max_speed: float) -> np.ndarray | None:
+                      preferred: np.ndarray, max_speed: float, diagnostics=None) -> np.ndarray | None:
         point, direction = lines[line_index]
         dot_product = float(np.dot(point, direction))
         discriminant = dot_product ** 2 + max_speed ** 2 - float(np.dot(point, point))
@@ -94,6 +99,8 @@ class ORCAAvoidance(AvoidanceAlgorithm):
         root = math.sqrt(discriminant)
         left, right = -dot_product - root, -dot_product + root
         for prior_point, prior_direction in lines[:line_index]:
+            if diagnostics is not None:
+                diagnostics.lp_pair_evaluations += 1
             denominator = det(direction, prior_direction)
             numerator = det(prior_direction, point - prior_point)
             if abs(denominator) < 1e-9:

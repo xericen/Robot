@@ -29,7 +29,7 @@ def plot(source=ROOT / "sweep_agent_count.csv", output=ROOT / "figs"):
     plt.rcParams.update({"font.family": font_manager.FontProperties(fname=FONT).get_name(),
                          "axes.unicode_minus": False, "font.size": 10})
     df = pd.read_csv(source)
-    if df.duplicated(["map", "scenario", "algorithm", "seed"]).any():
+    if df.duplicated(["map", "scenario", "algorithm", "seed", "agent_count"]).any():
         raise ValueError("중복 실험 키가 있습니다.")
     # Agent-count-only plots require a fixed map/planner/traffic/parameter configuration.
     from newton_results import PARAMETERS
@@ -37,13 +37,26 @@ def plot(source=ROOT / "sweep_agent_count.csv", output=ROOT / "figs"):
                 "safety_distance_m", *PARAMETERS):
         if df[key].nunique(dropna=False) != 1:
             raise ValueError(f"혼합 조건을 분리한 후 시각화하세요: {key}")
+    for key in ("encounter_mode","population_mode"):
+        if key in df and df[key].nunique(dropna=False) != 1:
+            raise ValueError(f"서로 다른 실험 집단을 분리하세요: {key}")
     df["risk_events"] = df["collision_count"] + df["safety_violation_count"]
+    if "static_safety_violation_count" in df:
+        df["risk_events"] += df["static_safety_violation_count"].fillna(0)
     df["success_pct"] = df["success"] * 100
     df.loc[df["success"] != 1, "arrival_time_s"] = float("nan")
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     summaries = []
-    for key, title, ylabel, filename in PLOTS:
+    specifications = list(PLOTS)
+    if "safe_success" in df:
+        df["safe_success_pct"] = df["safe_success"]*100
+        df["collision_free_pct"] = df["collision_free_success"]*100
+        specifications += [
+            ("safe_success_pct","안전거리 준수 도달률","도달률 (%)","06_safe_success.png"),
+            ("collision_free_pct","무충돌 도달률","도달률 (%)","07_collision_free.png"),
+            ("min_separation_m","최소 표면 이격거리","거리 (m)","08_minimum_clearance.png")]
+    for key, title, ylabel, filename in specifications:
         fig, ax = plt.subplots(figsize=(7.4, 4.5))
         for algorithm, color in COLORS.items():
             group = df[df.algorithm == algorithm].groupby("agent_count")[key].agg(["count", "mean", "std"])
@@ -65,6 +78,27 @@ def plot(source=ROOT / "sweep_agent_count.csv", output=ROOT / "figs"):
         fig.savefig(output / filename, dpi=200)
         plt.close(fig)
         print(output / filename)
+    if all(key in df for key in ("neighbor_checks","candidate_checks","constraints","algo_steps")):
+        for key in ("neighbor_checks","candidate_checks","constraints"):
+            df[key+"_per_step"] = df[key]/df["algo_steps"]
+        fig,axes=plt.subplots(2,2,figsize=(10,7))
+        panels=[("algo_time_avg_ms","회피 계산시간 (ms/프레임)"),
+                ("neighbor_checks_per_step","이웃 검사 (회/프레임)"),
+                ("candidate_checks_per_step","후보·제약 검사 (회/프레임)"),
+                ("constraints_per_step","생성 제약 (개/프레임)")]
+        for ax,(key,title) in zip(axes.flat,panels):
+            for algorithm,color in COLORS.items():
+                g=df[df.algorithm==algorithm].groupby("agent_count")[key].agg(["mean","std"])
+                ax.errorbar(g.index,g["mean"],yerr=g["std"].fillna(0),label=LABELS[algorithm],
+                            color=color,marker="o",capsize=3)
+            ax.set(title=title,xlabel="이동 에이전트 수 (R0 제외)")
+            if key=="algo_time_avg_ms": ax.set_yscale("log")
+            ax.grid(color="#d1d5db",alpha=.65)
+        axes[0,0].legend(fontsize=8)
+        fig.suptitle("입력 크기에 따른 계산량과 실행시간")
+        fig.tight_layout()
+        fig.savefig(output/"09_complexity.png",dpi=200);plt.close(fig)
+        print(output/"09_complexity.png")
     (output / "summary.json").write_text(json.dumps(summaries, ensure_ascii=False, indent=2))
     print(pd.DataFrame(summaries).to_string(index=False))
     return summaries

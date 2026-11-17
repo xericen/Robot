@@ -1,0 +1,162 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "VO",
+  "seed": 43,
+  "agent_count": 8,
+  "worker_count": 6,
+  "other_robot_count": 2,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "mixed",
+  "encounter": {
+    "mode": "crossing",
+    "population": "mixed",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          14.65049341860408,
+          14.941849963161985
+        ],
+        "goal": [
+          14.65049341860408,
+          11.058150036838015
+        ],
+        "radius": 0.3,
+        "max_speed": 0.804182016502083,
+        "release_time_s": 7.195926622594704
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          18.186762316045694,
+          15.039506599192134
+        ],
+        "goal": [
+          18.186762316045694,
+          10.960493400807866
+        ],
+        "radius": 0.3,
+        "max_speed": 0.797100413775002,
+        "release_time_s": 10.348664030114984
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          24.219816137379443,
+          10.60863290421738
+        ],
+        "goal": [
+          24.219816137379443,
+          15.39136709578262
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7515948157209285,
+        "release_time_s": 15.16701972539238
+      },
+      {
+        "id": "robot-0",
+        "kind": "robot",
+        "position": [
+          9.871091002427903,
+          11.280587593500725
+        ],
+        "goal": [
+          9.871091002427903,
+          14.719412406499275
+        ],
+        "radius": 0.42,
+        "max_speed": 1.0702055874929732,
+        "release_time_s": 4.937087802927616
+      },
+      {
+        "id": "worker-3",
+        "kind": "worker",
+        "position": [
+          15.401092191862414,
+          11.20980098960278
+        ],
+        "goal": [
+          15.401092191862414,
+          14.79019901039722
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8491503352650746,
+        "release_time_s": 8.093015690116786
+      },
+      {
+        "id": "worker-4",
+        "kind": "worker",
+        "position": [
+          19.390896623356515,
+          10.696654708319407
+        ],
+        "goal": [
+          19.390896623356515,
+          15.303345291680593
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8784067899862816,
+        "release_time_s": 12.177902036176791
+      },
+      {
+        "id": "worker-5",
+        "kind": "worker",
+        "position": [
+          15.617957886882714,
+          15.467985908454077
+        ],
+        "goal": [
+          15.617957886882714,
+          10.532014091545923
+        ],
+        "radius": 0.3,
+        "max_speed": 0.7333339094150112,
+        "release_time_s": 7.404188061967655
+      },
+      {
+        "id": "robot-1",
+        "kind": "robot",
+        "position": [
+          26.172900345905994,
+          11.09976473781024
+        ],
+        "goal": [
+          26.172900345905994,
+          14.90023526218976
+        ],
+        "radius": 0.42,
+        "max_speed": 0.9185627588714411,
+        "release_time_s": 17.240789004427008
+      }
+    ]
+  },
+  "scene_hash": "61ff10cdf7eb23d2a8262d34bc8e28271ac1e337397624e2f1180fbf4361fbb6",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

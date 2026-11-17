@@ -47,6 +47,7 @@ class VelocityObstacleAvoidance(AvoidanceAlgorithm):
         best = np.zeros(2, dtype=float)
         best_cost = float("inf")
         for candidate in candidates:
+            diagnostics.candidate_velocity_checks += 1
             safe = True
             for other in neighbors:
                 diagnostics.neighbor_checks += 1

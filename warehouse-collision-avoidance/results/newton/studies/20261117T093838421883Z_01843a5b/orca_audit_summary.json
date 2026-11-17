@@ -1,0 +1,12 @@
+{
+  "hypothesis_frame_counts": {
+    "physical_tracking_error": 149,
+    "prediction_or_noncooperative_motion": 203,
+    "infeasible_constraints": 45
+  },
+  "target_constraint_violation_frames": 45,
+  "static_risk_only_frames": 33,
+  "tracking_error_mean_mps": 0.12578297486169737,
+  "tracking_error_max_mps": 1.2763932238629088,
+  "interpretation": "가설 분류이며 원인 증명이 아님. static_risk_only는 동적 위반/접촉 없이 정적 안전거리만 위반한 프레임."
+}

@@ -25,11 +25,14 @@ def run_newton():
 
     # Read persisted summaries without importing Newton into WIZ's interpreter.
     if wiz.request.query("mode", "single") == "saved":
+        batch_id = wiz.request.query("batch_id", "")
         try:
             root = os.path.join(wiz.project.path(), "warehouse-collision-avoidance")
             completed = subprocess.run(
                 [os.path.join(root, ".venv/bin/python"), "-c",
-                 "import json; from newton_results import load_results; print(json.dumps(load_results()))"],
+                 ("import json,sys; from unified_batch import active_status; print(json.dumps(active_status(sys.argv[1])['rows']))"
+                  if batch_id else "import json,sys; from newton_results import load_results; print(json.dumps(load_results(sys.argv[1]=='true')))"),
+                 batch_id or wiz.request.query("history", "false")],
                 cwd=root, capture_output=True, text=True, timeout=15, check=True)
             rows = json.loads(completed.stdout)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
@@ -41,6 +44,10 @@ def run_newton():
         parameters = json.loads(wiz.request.query("parameters", "{}"))
         if not isinstance(parameters, dict):
             raise ValueError("파라미터는 JSON 객체여야 합니다.")
+        encounter_mode = wiz.request.query("encounter_mode", "baseline")
+        population_mode = wiz.request.query("population_mode", "legacy")
+        if encounter_mode not in ("baseline","head_on","crossing","narrow_passing") or population_mode not in ("legacy","workers","mixed"):
+            raise ValueError("지원하지 않는 만남 조건/인구 구성입니다.")
         scenario = wiz.request.query("scenario", "medium")
         map_id = wiz.request.query("map_id", "map1")
         planner = wiz.request.query("planner", "astar")
@@ -86,7 +93,7 @@ def run_newton():
                 "--frames", str(frames),
                 "--viewer", "null", "--map", map_id, "--planner", planner, "--traffic-mode", traffic_mode,
             ]
-            command.extend(["--parameters", json.dumps(parameters)])
+            command.extend(["--parameters", json.dumps(parameters), "--encounter", encounter_mode, "--population", population_mode])
             if common_traffic:
                 command.append("--common-traffic")
             completed = subprocess.run(
@@ -120,6 +127,58 @@ def live_newton():
 
     root = Path(wiz.project.path()) / "warehouse-collision-avoidance"
     study_action = wiz.request.query("action", "status")
+    if study_action == "unified_status":
+        try:
+            done = subprocess.run([str(root / ".venv/bin/python"), "-c",
+                "import json,sys; from unified_batch import active_status; print(json.dumps(active_status(sys.argv[1])))",
+                wiz.request.query("batch_id", "")],cwd=root,capture_output=True,text=True,timeout=15,check=True)
+            selected = json.loads(done.stdout)
+        except (OSError,ValueError,subprocess.SubprocessError) as error:
+            wiz.response.status(400, message=str(error))
+        wiz.response.status(200, selected)
+    if study_action == "research_status":
+        research_root = root / "results/newton/research"
+        available = sorted(p.parent.name for p in research_root.glob("*/dashboard.json")
+                           if re.fullmatch(r"[0-9]{8}T[0-9]{6}_[a-f0-9]{8}", p.parent.name)
+                           and (json.loads(p.read_text()).get("schema",1)<2 or (p.parent/"verification.json").exists()))
+        active = root / "results/newton/active_batch.json"
+        preferred = json.loads(active.read_text()).get("research_id", "") if active.exists() else ""
+        batch = wiz.request.query("research_id", "") or preferred or (available[-1] if available else "")
+        if batch and batch not in available:
+            wiz.response.status(400, message="지원하지 않는 연구 분석입니다.")
+        data = json.loads((research_root / batch / "dashboard.json").read_text()) if batch else {"status":"missing"}
+        data["available"] = available
+        wiz.response.status(200, data)
+    if study_action == "controlled_status":
+        import csv
+        batches=[]
+        study_root=root/"results/newton/studies"
+        try:
+            for path in sorted(study_root.glob("*/progress.json")):
+                if not re.fullmatch(r"[0-9]{8}T[0-9]{12}Z_[a-f0-9]{8}",path.parent.name):
+                    continue
+                state=json.loads(path.read_text())
+                batches.append({key:state.get(key) for key in ("batch_id","phase","completed","total")})
+            batch=wiz.request.query("batch_id", "") or (batches[-1]["batch_id"] if batches else "")
+            if batch and (not re.fullmatch(r"[0-9]{8}T[0-9]{12}Z_[a-f0-9]{8}",batch)
+                          or batch not in [b["batch_id"] for b in batches]):
+                raise ValueError("지원하지 않는 실험 배치입니다.")
+            result={"batches":batches,"phase":"idle","rows":[],"figures":[],"batch_id":batch}
+            if batch:
+                folder=study_root/batch
+                result.update(json.loads((folder/"progress.json").read_text()))
+                result["configuration"]=json.loads((folder/"configuration.json").read_text())
+                summary=folder/"safety_summary.csv"
+                if summary.exists():
+                    with summary.open() as source:
+                        result["rows"]=[{k:(None if v=="" else v) for k,v in row.items()} for row in csv.DictReader(source)]
+                if result["phase"]=="complete":
+                    result["figures"]=[{"group":p.parent.name,"name":p.name,
+                        "url":"/warehouse-experiments/"+batch+"/"+p.parent.name+"/"+p.name}
+                        for p in sorted((folder/"figs").glob("*/*.png"))]
+        except (OSError,ValueError) as error:
+            wiz.response.status(400,message=str(error))
+        wiz.response.status(200,result)
     if study_action in ("study_start", "study_status"):
         study_result = None
         try:
@@ -167,6 +226,7 @@ def live_newton():
         except (OSError, ValueError) as error:
             wiz.response.status(400, message=str(error))
         wiz.response.status(200, catalog)
+    created_process = None
     try:
         root = Path(wiz.project.path()) / "warehouse-collision-avoidance"
         sessions = root / "results" / "live"
@@ -177,8 +237,15 @@ def live_newton():
             algorithm = wiz.request.query("algorithm", "orca").lower()
             scenario = wiz.request.query("scenario", "medium")
             config = {
+                "encounter_mode": wiz.request.query("encounter_mode", "baseline"),
+                "population_mode": wiz.request.query("population_mode", "legacy"),
                 "parameters": json.loads(wiz.request.query("parameters", "{}")),
                 "algorithm_name": algorithm, "scenario_name": scenario,
+                "strict_comparison": True,
+                "common_traffic": wiz.request.query("common_traffic", "false") == "true",
+                "render_fps": 10,
+                "viewer_sync": True,
+                "render_3d": wiz.request.query("render_3d", "true") == "true",
                 "map_id": wiz.request.query("map_id", "map1"),
                 "planner": wiz.request.query("planner", "astar"),
                 "traffic_mode": wiz.request.query("traffic_mode", "dynamic"),
@@ -229,8 +296,9 @@ def live_newton():
                     process = subprocess.Popen(
                         [str(root / ".venv/bin/python"), str(root / "newton_live.py"), str(folder)],
                         cwd=root, stdout=log, stderr=log, start_new_session=True)
+                created_process = process
                 (folder / "pid").write_text(str(process.pid))
-            deadline = time.monotonic() + 20
+            deadline = time.monotonic() + 40
             while not (folder / "status.json").exists():
                 if (folder / "error.json").exists():
                     raise RuntimeError(json.loads((folder / "error.json").read_text())["message"])
@@ -244,37 +312,74 @@ def live_newton():
             raise ValueError("세션을 찾을 수 없습니다.")
         if action not in ("create", "load", "status", "pause", "resume", "reset", "seek", "display", "close"):
             raise ValueError("지원하지 않는 제어입니다.")
-        # Heartbeat is also a command so an abandoned process expires in 15 minutes.
-        request_id = uuid.uuid4().hex
-        command = {"id": request_id, "action": "touch" if action in ("create", "load", "status") else action}
-        if action == "seek":
-            command["frame"] = int(wiz.request.query("frame", "0"))
-        if action == "display":
-            command.update(path=wiz.request.query("path", "true") == "true",
-                           risk=wiz.request.query("risk", "true") == "true")
-        temporary = folder / (request_id + ".tmp")
-        temporary.write_text(json.dumps(command))
-        os.replace(temporary, folder / "command.json")
-        if action == "close":
-            result = {"token": token, "phase": "closed"}
-        else:
-            deadline = time.monotonic() + 4
-            while True:
-                if (folder / "error.json").exists():
-                    raise RuntimeError(json.loads((folder / "error.json").read_text())["message"])
-                result = json.loads((folder / "status.json").read_text())
-                if result["ack"] == request_id:
-                    break
-                if time.monotonic() > deadline:
-                    raise RuntimeError("Newton 제어 응답이 없습니다. 세션을 다시 시작하세요.")
-                time.sleep(.02)
-            since = int(wiz.request.query("since", "-1"))
-            if action in ("reset", "create", "load"):
-                since = -1
-            result["frames"] = [json.loads((folder / ("frame-%04d.json" % i)).read_text())
-                                for i in range(max(0, since + 1), result["frame_count"])]
-            result["token"] = token
-            result["viewer_url"] = "/warehouse-viewer/" + token
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("live_payload",str(root/"live_payload.py"))
+        live_payload = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(live_payload)
+        compact = wiz.request.query("compact","false") == "true"
+        version = wiz.request.query("metadata_version","")
+        since = int(wiz.request.query("since","-1"))
+        presented=int(wiz.request.query("presented_frame","-1"))
+        if presented>=0:
+            state=json.loads((folder/"status.json").read_text())
+            if version==state.get("metadata_version"):
+                ack={"frame":min(presented,state["frame_count"]-1),"metadata_version":version}
+                temporary=folder/(uuid.uuid4().hex+".acktmp")
+                temporary.write_text(json.dumps(ack))
+                os.replace(temporary,folder/"presented.json")
+
+        if action == "status" and "metadata_version" in json.loads((folder/"status.json").read_text()):
+            (folder/"heartbeat").touch()
+            result = live_payload.read_snapshot(folder,since,compact,version)
+            wiz.response.status(200,result)
+        # Serialize control and polling for the same worker across requests/tabs.
+        with (folder / ".command.lock").open("a") as command_lock:
+            fcntl.flock(command_lock, fcntl.LOCK_EX)
+            # Heartbeat is also a command so an abandoned process expires in 15 minutes.
+            request_id = uuid.uuid4().hex
+            command = {"id": request_id, "action": "touch" if action in ("create", "load", "status") else action}
+            if action == "resume":
+                start_at = float(wiz.request.query("start_at", "0"))
+                if not 0 <= start_at <= time.time()+5:
+                    raise ValueError("시작 예약 시간이 유효하지 않습니다.")
+                command["start_at"] = start_at
+            if action == "seek":
+                command["frame"] = int(wiz.request.query("frame", "0"))
+            if action == "display":
+                command.update(path=wiz.request.query("path", "true") == "true",
+                               risk=wiz.request.query("risk", "true") == "true",
+                               render_3d=wiz.request.query("render_3d", "true") == "true")
+            temporary = folder / (request_id + ".tmp")
+            temporary.write_text(json.dumps(command))
+            os.replace(temporary, folder / "command.json")
+            if action == "close":
+                # Release the viewer slot before a map change creates the next three workers.
+                deadline = time.monotonic()+5
+                while time.monotonic()<deadline:
+                    try:
+                        pid = int((folder/"pid").read_text())
+                        os.kill(pid,0)
+                        state = Path("/proc")/str(pid)/"stat"
+                        if not state.exists() or state.read_text().split(") ",1)[1].startswith("Z"):
+                            break
+                    except (OSError,ValueError):
+                        break
+                    time.sleep(.02)
+                result = {"token": token, "phase": "closed"}
+            else:
+                deadline = time.monotonic() + (10 if action == "reset" else 4)
+                while True:
+                    if (folder / "error.json").exists():
+                        raise RuntimeError(json.loads((folder / "error.json").read_text())["message"])
+                    result = json.loads((folder / "status.json").read_text())
+                    if result["ack"] == request_id:
+                        break
+                    if time.monotonic() > deadline:
+                        raise RuntimeError("Newton 제어 응답이 없습니다. 세션을 다시 시작하세요.")
+                    time.sleep(.02)
+                result = live_payload.read_snapshot(folder,since,compact,version,action in ("reset","create","load"))
     except (ValueError, TypeError, OSError, RuntimeError, KeyError) as error:
+        if created_process is not None:
+            created_process.terminate()
         wiz.response.status(400, message=str(error))
     wiz.response.status(200, result)

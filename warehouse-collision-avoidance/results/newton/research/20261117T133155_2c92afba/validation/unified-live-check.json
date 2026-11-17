@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "batch_id": "20261117T133155_2c92afba",
+  "same_scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+  "explicit_crossing_workers": true,
+  "strict_live_frame_limit": 30,
+  "observed_time_s": 1.0,
+  "no_silent_extension": true
+}

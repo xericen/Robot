@@ -1,0 +1,7 @@
+{
+  "restored_from_existing_byte_identical_snapshots": [
+    "results/newton/map1_orca_medium_42.csv"
+  ],
+  "new_policy": "existing compatibility aliases remain unchanged; later runs use run-specific metrics.csv",
+  "background_live_outputs_retained": true
+}

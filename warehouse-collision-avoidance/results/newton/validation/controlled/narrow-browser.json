@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "live_condition_switch": true,
+  "racks": 6,
+  "physical_barriers": 2,
+  "two_dimensional_obstacles": 8,
+  "actors": 4,
+  "passage_width_m": 2.8,
+  "phase": "paused",
+  "page_errors": []
+}

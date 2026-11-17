@@ -1,0 +1,4 @@
+algorithm,runs,goals,collision_free,safe
+Naive,70,59,37,8
+ORCA,70,68,42,2
+VO,70,70,45,29

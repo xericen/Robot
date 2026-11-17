@@ -44,8 +44,8 @@ with sync_playwright() as playwright:
     page.get_by_role("button", name="선택 맵 · 세 알고리즘 실행", exact=True).click()
     expect(page.locator(".unified-dashboard .table-scroll tbody tr")).to_have_count(3, timeout=120000)
     for row in page.locator(".unified-dashboard .table-scroll tbody tr").all():
-        expect(row.locator("td").nth(3)).to_have_text("timeout")
-        expect(row.locator("td").nth(4)).to_have_text("N/A")
+        expect(row.locator("td").nth(4)).to_have_text("timeout")
+        expect(row.locator("td").nth(8)).to_have_text("N/A")
     import csv
     for algorithm in ("naive", "vo", "orca"):
         path = OUT.parents[0] / f"map1_{algorithm}_medium_9001.csv"

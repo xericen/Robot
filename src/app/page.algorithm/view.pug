@@ -22,7 +22,7 @@ p(role="alert", *ngIf="pageError", class="px-6 py-3 text-sm text-red-600") {{pag
                 strong 이동 에이전트 수 n (R0 제외)
             .property
                 span 비교 조건
-                strong 동일하거나 유사한 환경에서 3가지 방식 비교
+                strong 같은 맵·시드·초기 상태에서 3가지 방식 비교
         section
             .section-title
                 h2 비교할 알고리즘
@@ -42,11 +42,16 @@ p(role="alert", *ngIf="pageError", class="px-6 py-3 text-sm text-red-600") {{pag
                 .conditions
                     h3 고정 실험 조건
                     ul
-                        li 6개 맵 · easy / medium / hard / crowded 4단계
-                        li 전역 탐색 A* / Dijkstra / RRT · 작업자 동적 순찰
+                        li 현재 통일 배치: 6개 맵 · 횡단 작업자 4명 · medium
+                        li 주행 비교 A* 고정 · 동적 순찰 · Dijkstra/RRT는 별도 전역 분석
                         li 시드 42~46 고정 · 5400프레임 한도 (기본 180초)
                         li success: 목표 0.25m 이내 및 속도 0.02m/s 이하 · 한도 내 미도달 timeout
-            p.caption 스윕은 Map 1 Standard · A* · 동적 순찰 · 이동 에이전트 2/4/9/16개 · 각 알고리즘과 시드 5개로 총 60회입니다. hard는 작업자 7명과 다른 로봇 2대를 포함합니다. Pygame 예비 실험은 사전 타당성 검증 데이터로 유지합니다.
+            p.caption 통일 배치는 6맵×3알고리즘×5시드 총90조건입니다. 원본 실행 ID를 공유해 비교·결과·연구분석을 갱신합니다. 기존 Map1 규모 스윕60회와 Pygame 예비 자료는 별도 과거 기록으로 유지합니다.
+        section
+            h2 기존 별도 통제 실험
+            p 정면 접근·통로 횡단·Map1의 2.8m 좁은 교행을 출발 지연과 함께 구성합니다. 작업자 전용과 혼합 구성을 분리하고, 같은 시드에서 세 방식의 초기 상태 해시가 일치하는지 확인합니다.
+            p 입력 n은 2·4·8·16개이며, 집단마다 각 방식과 시드 42~51을 조합한 총 240회 실험을 수행합니다. 기존 60회 기준 실험과 Pygame 예비 자료는 유지합니다.
+            p 도달률·무충돌 도달률·안전거리 준수 도달률을 구분하고 최소 이격거리, ORCA 위반 프레임과 계산량을 기록합니다. 실행 ID별 설정·초기 상태·코드 해시·의존성 버전을 보존합니다.
         section
             h2 평가 지표
             .table-scroll

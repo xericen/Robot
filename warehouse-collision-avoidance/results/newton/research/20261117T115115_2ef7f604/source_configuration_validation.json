@@ -1,0 +1,12 @@
+{
+  "main240": {
+    "rows": 240,
+    "matched_triplets": 80,
+    "physical_final_states_verified": true
+  },
+  "pilot18": {
+    "rows": 18,
+    "matched_triplets": 6,
+    "physical_final_states_verified": true
+  }
+}

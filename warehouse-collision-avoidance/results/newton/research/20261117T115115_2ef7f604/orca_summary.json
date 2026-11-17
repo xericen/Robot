@@ -1,0 +1,12 @@
+{
+  "frames": 20521,
+  "categories": {
+    "E": 11808,
+    "D": 4531,
+    "B": 4182
+  },
+  "C_causal_count": 0,
+  "C_candidates": 203,
+  "confirmed_output_errors": 0,
+  "note": "Frames are correlated, not independent trials. C is not causally identified. E includes static risk; historical preferred velocity is N/A."
+}

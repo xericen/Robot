@@ -1,0 +1,9 @@
+{
+  "repeats": 10,
+  "counts": "2,4,8,16",
+  "populations": "workers,mixed",
+  "encounters": "crossing",
+  "maps": "map1",
+  "frames": 5400,
+  "seed": 42
+}

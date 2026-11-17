@@ -1,0 +1,102 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "ORCA",
+  "seed": 44,
+  "agent_count": 4,
+  "worker_count": 3,
+  "other_robot_count": 1,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "mixed",
+  "encounter": {
+    "mode": "crossing",
+    "population": "mixed",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          24.236711793189656,
+          15.133913591816345
+        ],
+        "goal": [
+          24.236711793189656,
+          10.866086408183655
+        ],
+        "radius": 0.3,
+        "max_speed": 0.9512543655516971,
+        "release_time_s": 16.522658223840082
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          12.544153943543256,
+          15.260462042902091
+        ],
+        "goal": [
+          12.544153943543256,
+          10.739537957097909
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8656283544147811,
+        "release_time_s": 5.958157770927656
+      },
+      {
+        "id": "worker-2",
+        "kind": "worker",
+        "position": [
+          15.553731895894765,
+          15.153435647170262
+        ],
+        "goal": [
+          15.553731895894765,
+          10.846564352829738
+        ],
+        "radius": 0.3,
+        "max_speed": 0.8811877384659761,
+        "release_time_s": 8.890939308002269
+      },
+      {
+        "id": "robot-0",
+        "kind": "robot",
+        "position": [
+          23.334458146808046,
+          11.271219573086054
+        ],
+        "goal": [
+          23.334458146808046,
+          14.728780426913946
+        ],
+        "radius": 0.42,
+        "max_speed": 1.0456866309658865,
+        "release_time_s": 16.416711816732057
+      }
+    ]
+  },
+  "scene_hash": "48a6676c8e170c5409f233fb70395d0c3efa1ee4e41569349c6d97a53b08534e",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

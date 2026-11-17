@@ -135,7 +135,8 @@ class WarehouseVisuals:
             x, y = shelf["position"]
             angle = np.radians(shelf["rotation"])/2
             self.racks.append(self.scene.add_mesh_trimesh(f"/warehouse/models/rack-{i}",
-                rack_mesh(w, d, metadata.get("shelf_height_m", 1.5)),
+                (_box((w,d,1.2),(0,0,.6),(110,120,130)) if shelf.get("kind") == "barrier"
+                 else rack_mesh(w, d, metadata.get("shelf_height_m", 1.5))),
                 position=(x, y, 0), wxyz=(np.cos(angle),0,0,np.sin(angle))))
         self.roots = {}
         for body in metadata["bodies"]:

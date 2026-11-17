@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "batch_id": "20261117T133155_2c92afba",
+  "comparison_rows": 90,
+  "result_algorithms": 3,
+  "research_panels": 5,
+  "same_run_ids_in_api_csv_and_research": true,
+  "scenario_options": [
+    "Crossing"
+  ],
+  "errors": []
+}

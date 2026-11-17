@@ -1,0 +1,39 @@
+{
+  "mapId": "map1",
+  "scenario": "medium",
+  "algorithm": "ORCA",
+  "seed": 9001,
+  "agent_count": 4,
+  "worker_count": 4,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 11,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 30,
+  "requested_frame_limit": 30,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "baseline",
+  "population_mode": "legacy",
+  "encounter": {
+    "mode": "baseline",
+    "population": "legacy",
+    "barriers": [],
+    "actors": []
+  },
+  "scene_hash": "094d905659af1317b4342c34e8c824e247f09a5c98913e4e61d822403a449e23",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

@@ -1,0 +1,72 @@
+{
+  "mapId": "map1",
+  "scenario": "crowded",
+  "algorithm": "VO",
+  "seed": 43,
+  "agent_count": 2,
+  "worker_count": 2,
+  "other_robot_count": 0,
+  "parameters": {
+    "orca_neighbor_dist_m": 0.0,
+    "orca_max_neighbors": 0,
+    "orca_horizon_s": 3.0,
+    "time_step_s": 0.03333333333333333,
+    "vo_horizon_s": 3.0,
+    "vo_candidates": 74,
+    "naive_stop_margin_m": 0.0,
+    "naive_influence_m": 1.2
+  },
+  "planner": "astar",
+  "planner_seed": 42,
+  "traffic_mode": "dynamic",
+  "common_traffic": false,
+  "frame_limit": 5400,
+  "requested_frame_limit": 5400,
+  "safety_distance_m": 0.35,
+  "robot_speed_mps": 1.2,
+  "encounter_mode": "crossing",
+  "population_mode": "workers",
+  "encounter": {
+    "mode": "crossing",
+    "population": "workers",
+    "barriers": [],
+    "passage_width_m": null,
+    "rng": "SeedSequence([seed, actor_index, 20261117]); prefix-stable within a population mode",
+    "actors": [
+      {
+        "id": "worker-0",
+        "kind": "worker",
+        "position": [
+          14.65049341860408,
+          14.941849963161985
+        ],
+        "goal": [
+          14.65049341860408,
+          11.058150036838015
+        ],
+        "radius": 0.3,
+        "max_speed": 0.804182016502083,
+        "release_time_s": 7.195926622594704
+      },
+      {
+        "id": "worker-1",
+        "kind": "worker",
+        "position": [
+          18.186762316045694,
+          15.039506599192134
+        ],
+        "goal": [
+          18.186762316045694,
+          10.960493400807866
+        ],
+        "radius": 0.3,
+        "max_speed": 0.797100413775002,
+        "release_time_s": 10.348664030114984
+      }
+    ]
+  },
+  "scene_hash": "0364980311a3437c5fdb86702c4d37c3eaaebc6f4f50d34964f34a95cf82dddc",
+  "newton_version": "1.7.0",
+  "warp_version": "1.19.0",
+  "device": "cpu"
+}

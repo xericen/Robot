@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "original_files_verified": 2423,
+  "raw_totals_recomputed": true,
+  "dashboard_matches_all_numeric_csv_fields": true,
+  "resume_no_new_runs": true,
+  "missing_data_generates_no_values": true,
+  "existing_output_rejected": true,
+  "supplement_runs": 30,
+  "figures": 24
+}

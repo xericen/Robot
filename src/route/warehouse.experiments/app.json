@@ -1,0 +1,8 @@
+{
+    "id": "warehouse.experiments",
+    "title": "Newton 통제 실험 그래프",
+    "route": "/warehouse-experiments/<path:path>",
+    "category": "",
+    "viewuri": "",
+    "controller": ""
+}

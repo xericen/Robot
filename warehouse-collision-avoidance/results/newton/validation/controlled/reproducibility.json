@@ -1,0 +1,295 @@
+{
+  "frames": 600,
+  "seed": 42,
+  "pairs": [
+    {
+      "encounter": "head_on",
+      "algorithm": "naive",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 16.280179313632107,
+          "collisions": 1,
+          "safety_violations": 16,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.003029747009277328,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 16.280179313632107,
+          "collisions": 1,
+          "safety_violations": 16,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.003029747009277328,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "head_on",
+      "algorithm": "vo",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.58216618769042,
+          "collisions": 0,
+          "safety_violations": 0,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.35116168412703247,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.58216618769042,
+          "collisions": 0,
+          "safety_violations": 0,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.35116168412703247,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "head_on",
+      "algorithm": "orca",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.487045305170568,
+          "collisions": 0,
+          "safety_violations": 2,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.3451212146918155,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "0fcade3c9eef0d8a945b591bb7604b6b0e9ff9e0974984dfcea3319c4f97d6dd",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.487045305170568,
+          "collisions": 0,
+          "safety_violations": 2,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.3451212146918155,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "crossing",
+      "algorithm": "naive",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 16.280179313632107,
+          "collisions": 1,
+          "safety_violations": 16,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.003029747009277328,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 16.280179313632107,
+          "collisions": 1,
+          "safety_violations": 16,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.003029747009277328,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "crossing",
+      "algorithm": "vo",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.395076611543374,
+          "collisions": 0,
+          "safety_violations": 0,
+          "static_safety_violations": 1,
+          "min_separation_m": 0.12287066579918399,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.395076611543374,
+          "collisions": 0,
+          "safety_violations": 0,
+          "static_safety_violations": 1,
+          "min_separation_m": 0.12287066579918399,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "crossing",
+      "algorithm": "orca",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.47275877436382,
+          "collisions": 0,
+          "safety_violations": 2,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.3451212146918155,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "d893de2ef535b6cffd7de7f4030d3aae5c1ed4834e1bc52c3e0f8ccbd197ef05",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 22.47275877436382,
+          "collisions": 0,
+          "safety_violations": 2,
+          "static_safety_violations": 0,
+          "min_separation_m": 0.3451212146918155,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "narrow_passing",
+      "algorithm": "naive",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 17.097729539185714,
+          "collisions": 2,
+          "safety_violations": 16,
+          "static_safety_violations": 1,
+          "min_separation_m": -0.0026863269390842714,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 17.097729539185714,
+          "collisions": 2,
+          "safety_violations": 16,
+          "static_safety_violations": 1,
+          "min_separation_m": -0.0026863269390842714,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "narrow_passing",
+      "algorithm": "vo",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 20.83341470311448,
+          "collisions": 1,
+          "safety_violations": 1,
+          "static_safety_violations": 1,
+          "min_separation_m": -0.004234867604323456,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 20.83341470311448,
+          "collisions": 1,
+          "safety_violations": 1,
+          "static_safety_violations": 1,
+          "min_separation_m": -0.004234867604323456,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    },
+    {
+      "encounter": "narrow_passing",
+      "algorithm": "orca",
+      "equal": true,
+      "differences": {},
+      "measured_pair": [
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 21.13984874207097,
+          "collisions": 2,
+          "safety_violations": 3,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.0029800168692252216,
+          "collision_free_success": 0,
+          "safe_success": 0
+        },
+        {
+          "scene_hash": "b8bdc68852a38bbb7eb66f0f7c1a68f193d2a4a2a7edffe3b9aa66c79790d9b1",
+          "status": "timeout",
+          "sim_time_s": 20.0,
+          "path_length_m": 21.13984874207097,
+          "collisions": 2,
+          "safety_violations": 3,
+          "static_safety_violations": 2,
+          "min_separation_m": -0.0029800168692252216,
+          "collision_free_success": 0,
+          "safe_success": 0
+        }
+      ]
+    }
+  ],
+  "all_equal": true
+}

@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "panels": 5,
+  "scenarios": 4,
+  "maps": 6,
+  "population_modes": 2,
+  "raw_csv_counts_match": true,
+  "invalid_assets_rejected": true,
+  "page_errors": []
+}

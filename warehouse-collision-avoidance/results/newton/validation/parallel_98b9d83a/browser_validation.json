@@ -1,0 +1,129 @@
+{
+  "passed": true,
+  "maps": [
+    {
+      "map": "map1",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        4.6,
+        4.766667,
+        4.766667
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    },
+    {
+      "map": "map2",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        0.666667,
+        1.7,
+        1.8
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    },
+    {
+      "map": "map3",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        0.733333,
+        0.8,
+        0.766667
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    },
+    {
+      "map": "map4",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        0.9,
+        1.3,
+        1.333333
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    },
+    {
+      "map": "map5",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        0.766667,
+        0.8,
+        0.833333
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    },
+    {
+      "map": "map6",
+      "algorithms": [
+        "VO",
+        "ORCA",
+        "Naive"
+      ],
+      "same_scene": true,
+      "pause_times": [
+        0.8,
+        0.866667,
+        0.8
+      ],
+      "worker_ids": [
+        "worker-0",
+        "worker-1",
+        "worker-2",
+        "worker-3"
+      ]
+    }
+  ],
+  "created_sessions": 18,
+  "three_viser_canvases_loaded": true,
+  "group_reset": true,
+  "page_errors": []
+}

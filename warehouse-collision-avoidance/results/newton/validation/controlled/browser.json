@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "archived_runs": 6,
+  "identical_scene_hash": true,
+  "history_survives_reexecution": true,
+  "population_forwarded": true,
+  "timeout_metrics": true,
+  "page_errors": [],
+  "seed": 359553
+}

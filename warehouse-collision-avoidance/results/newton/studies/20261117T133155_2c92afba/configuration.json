@@ -1,0 +1,68 @@
+{
+  "kind": "unified-six-map",
+  "contract": {
+    "schema": 1,
+    "scenario": "medium",
+    "agent_count": 4,
+    "population_mode": "workers",
+    "encounter_mode": "crossing",
+    "planner": "astar",
+    "traffic_mode": "dynamic",
+    "common_traffic": false,
+    "frames": 5400,
+    "safety": 0.35,
+    "speed": 1.2,
+    "parameters": {
+      "orca_neighbor_dist_m": 0.0,
+      "orca_max_neighbors": 0,
+      "orca_horizon_s": 3.0,
+      "time_step_s": 0.03333333333333333,
+      "vo_horizon_s": 3.0,
+      "vo_candidates": 74,
+      "naive_stop_margin_m": 0.0,
+      "naive_influence_m": 1.2
+    },
+    "maps": [
+      "map1",
+      "map2",
+      "map3",
+      "map4",
+      "map5",
+      "map6"
+    ],
+    "algorithms": [
+      "naive",
+      "vo",
+      "orca"
+    ],
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "execution": "serial CPU",
+    "scope": "six layouts, one population n=4 and Crossing; no density/other-encounter inference"
+  },
+  "engine_sha256": {
+    "newton_warehouse.py": "d09572935a6d48048ac8b555509d8b7ba1b6c50c33c506c1063bd46a6e9fccbd",
+    "newton_safety.py": "7ff18afb7d23627c8abbdba25b1911dc4b1fb66a2824ec979d688f20b8f0bbd3",
+    "encounter_scenarios.py": "3d2467a81fab0534123f3b0f95572b0ba96e979f15cc75ced15c7a355f80e8dd",
+    "newton_results.py": "08d882d84e6f779133413de387aef9da65e4d6f0c3447aef60f19cbfbb957453",
+    "experiment_archive.py": "2368470a2761f4033cad30eee66908f0e7ea6f72ed58d57620a5bbc06b6dbec1",
+    "warehouse_maps.py": "9edb08b5c72846ef89a6c78fe9b311e7579afc754d8d0a9380d24061e7412d50",
+    "warehouse_maps.json": "345f9d676113493200c0db4d5ee128b0d848921325bcdd04c7fef9fac105099f",
+    "experiments/scenarios.py": "06e00cc79f5ad83ee650dcf59b4f6e6962b42966506be19d34dfb2d9d8363115",
+    "simulator/agents.py": "16a02b3addb699edeedfecf31cd16589b789d17509d71b6720e02eb75b5b9ad7",
+    "simulator/physics.py": "ee9c194812f5a67221736c5f32e337de28b728b3bea96cc321cf707d87458705",
+    "algorithms/__init__.py": "295e0a9eb862ee707526a30def71931f995d8cd70f76be1201be9e1ecd873777",
+    "algorithms/base.py": "2c8223126ba07865f6a7630fd99ad3e048259a96f2899eceb3be3b2196d0b767",
+    "algorithms/naive.py": "850a94bca04042cb3813a3b9c60f1c36a0bbd337ea38e048fa9fef5303902ea8",
+    "algorithms/orca.py": "8fd1c87102a861126969a4287033a6622667f9381a1999faf4d16e8fb5591547",
+    "algorithms/pathfinding.py": "8be8ff6d2cb4a1fbcae27e3b4243032a19dd38daba1f262363882a101e2369d8",
+    "algorithms/planners.py": "cee9b7ae9a6f6d4b0629e0e9cbe2db73bb920f4a969bb4583ec00dec1a999a8e",
+    "algorithms/velocity_obstacle.py": "2942f64faf4735912a452a8e086f8707e6b82466bbb5a4660c5dc0b1f99044d1"
+  },
+  "created_at": "2026-11-17T13:31:55.177879+00:00"
+}
